@@ -27,6 +27,7 @@ model usuarios {
     usuario_medalha        usuario_medalha?
     consultas              consultas[]
     transacoes_financeiras transacoes_financeiras[]
+    refreshToken           refresh_token[]
 }
 
 model tarefas {
@@ -143,6 +144,15 @@ model transacoes_financeiras {
     categoria  String
     data       DateTime
     tipo       String
+
+    usuario usuarios @relation(fields: [id_usuario], references: [id])
+}
+
+model refresh_token {
+    id           Int     @id @unique @default(autoincrement())
+    refreshToken String
+    id_usuario   Int
+    usado        Boolean @default(false)
 
     usuario usuarios @relation(fields: [id_usuario], references: [id])
 }
