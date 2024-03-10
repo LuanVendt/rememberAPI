@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model usuarios {
+    id                     Int                      @id @unique @default(autoincrement())
+    nome                   String
+    email                  String
+    data_nasc              DateTime
+    telefone               String
+    senha                  String
+    xp                     Int
+    tarefas                tarefas[]
+    categoria_usuario      categoria_usuario?
+    usuario_tema           usuario_tema[]
+    usuario_medalha        usuario_medalha?
+    consultas              consultas[]
+    transacoes_financeiras transacoes_financeiras[]
+}
+
+model tarefas {
+    id              Int      @id @unique @default(autoincrement())
+    id_usuario      Int
+    id_importancia  Int
+    id_categoria    Int
+    id_status       Int
+    nome            String
+    descricao       String
+    anotacao        String
+    data_criacao    DateTime @default(now())
+    data_vencimento DateTime
+
+    usuarios    usuarios    @relation(fields: [id_usuario], references: [id])
+    importancia importancia @relation(fields: [id_status], references: [id])
+    categoria   categorias  @relation(fields: [id_categoria], references: [id])
+    status      status      @relation(fields: [id_status], references: [id])
+    anexos      anexos[]
+}
+
+model importancia {
+    id      Int       @id @unique @default(autoincrement())
+    nome    String
+    tarefas tarefas[]
+}
+
+model categorias {
+    id                Int                @id @unique @default(autoincrement())
+    nome              String
+    tarefas           tarefas[]
+    categoria_usuario categoria_usuario?
+}
+
+model categoria_usuario {
+    id_categoria Int @unique
+    id_usuario   Int @unique
+
+    categoria categorias @relation(fields: [id_categoria], references: [id])
+    usuarios  usuarios   @relation(fields: [id_usuario], references: [id])
+
+    @@id([id_categoria, id_usuario])
+}
+
+model status {
+    id      Int       @id @unique @default(autoincrement())
+    nome    String
+    tarefas tarefas[]
+}
+
+model anexos {
+    id         Int      @id @unique @default(autoincrement())
+    id_tarefa  Int
+    nome       String
+    url        String
+    data_anexo DateTime @default(now())
+
+    tarefas tarefas @relation(fields: [id_tarefa], references: [id])
+}
+
+model temas {
+    id           Int            @id @unique @default(autoincrement())
+    cor1         String
+    cor2         String
+    cor3         String
+    usuario_tema usuario_tema[]
+}
+
+model usuario_tema {
+    id_usuario Int @unique
+    id_tema    Int @unique
+
+    tema     temas    @relation(fields: [id_tema], references: [id])
+    usuarios usuarios @relation(fields: [id_usuario], references: [id])
+
+    @@id([id_tema, id_usuario])
+}
+
+model medalhas {
+    id              Int              @id @unique @default(autoincrement())
+    nome            String
+    qtde_xp         Int
+    url_foto        String
+    usuario_medalha usuario_medalha?
+}
+
+model usuario_medalha {
+    id_usuario Int @unique
+    id_medalha Int @unique
+
+    usuario usuarios @relation(fields: [id_usuario], references: [id])
+    medalha medalhas @relation(fields: [id_medalha], references: [id])
+
+    @@id([id_medalha, id_usuario])
+}
+
+model consultas {
+    id             Int      @id @unique @default(autoincrement())
+    id_usuario     Int
+    nome_medico    String
+    especializacao String
+    data           DateTime
+    local          String
+    descricao      String
+
+    usuario usuarios @relation(fields: [id_usuario], references: [id])
+}
+
+model transacoes_financeiras {
+    id         Int      @id @unique @default(autoincrement())
+    id_usuario Int
+    descricao  String
+    preco      Float
+    categoria  String
+    data       DateTime
+    tipo       String
+
+    usuario usuarios @relation(fields: [id_usuario], references: [id])
+}
