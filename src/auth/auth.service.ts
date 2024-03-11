@@ -129,13 +129,13 @@ export class AuthService {
         }
     }
 
-    // async validateUsuario(payload: { id: string }) {
-    //     const usuario = await this.prisma.usuarioanization.findUnique({
-    //         where: { id: Number(payload.id) },
-    //     });
-    //     if (!usuario) {
-    //         throw new UnauthorizedException();
-    //     }
-    //     return usuario;
-    // }
+    async validateUsuario(payload: { id: string }) {
+        const usuario = await this.prisma.usuarios.findUnique({
+            where: { id: Number(payload.id) },
+        });
+        if (!usuario) {
+            throw new UnauthorizedException();
+        }
+        return usuario;
+    }
 }

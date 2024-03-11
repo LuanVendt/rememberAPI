@@ -20,7 +20,10 @@ model usuarios {
     data_nasc              DateTime
     telefone               String
     senha                  String
-    xp                     Int
+    xp                     Int                      @default(0)
+    criado_em              DateTime
+    editado_em             DateTime?
+    excluido_em            DateTime?
     tarefas                tarefas[]
     categoria_usuario      categoria_usuario?
     usuario_tema           usuario_tema[]
@@ -31,7 +34,7 @@ model usuarios {
 }
 
 model tarefas {
-    id              Int      @id @unique @default(autoincrement())
+    id              Int       @id @unique @default(autoincrement())
     id_usuario      Int
     id_importancia  Int
     id_categoria    Int
@@ -39,8 +42,11 @@ model tarefas {
     nome            String
     descricao       String
     anotacao        String
-    data_criacao    DateTime @default(now())
+    data_criacao    DateTime  @default(now())
     data_vencimento DateTime
+    criado_em       DateTime
+    editado_em      DateTime?
+    excluido_em     DateTime?
 
     usuarios    usuarios    @relation(fields: [id_usuario], references: [id])
     importancia importancia @relation(fields: [id_status], references: [id])
