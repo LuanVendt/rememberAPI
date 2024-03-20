@@ -113,7 +113,7 @@ export class PrismaUsersRepository implements UsuariosRepository {
         const user = await this.prisma.usuarios.findUnique({
             where: {
                 id,
-                excluido_em: null
+                excluido_em: null,
             }
         })
 
@@ -144,6 +144,7 @@ export class PrismaUsersRepository implements UsuariosRepository {
         const user = await this.prisma.usuarios.update({
             where: {
                 id,
+                excluido_em: null,
             },
             data: {
                 excluido_em: new Date()
