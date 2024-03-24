@@ -1,4 +1,4 @@
-export interface CriarTarefaDto {
+export interface CreateTaskDto {
     id?: number;
     id_usuario: number;
     id_importancia: number;

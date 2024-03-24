@@ -1,14 +1,15 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { TasksRepository } from "./repositories/tasks.repository";
-import { CriarTarefaDto } from "./dto/criar-tarefa.dto";
-import { QueryTarefaDto } from "./dto/query-tarefa.dto";
-import { EditarTarefaDto } from "./dto/editar-tarefa.dto";
+import { CreateTaskDto } from "./dto/create-task.dto";
+import { QueryTarefaDto } from "./dto/query-task.dto";
+import { UpdateTaskDto } from "./dto/update-task.dto";
+
 
 @Injectable()
 export class TasksService {
     constructor(private tasksRepository: TasksRepository) { }
 
-    async create(data: CriarTarefaDto) {
+    async create(data: CreateTaskDto) {
         if (!data.id_usuario) {
             throw new BadRequestException('Usuário é obrigatório.')
         }
@@ -61,7 +62,7 @@ export class TasksService {
         return task
     }
 
-    async update(id: string, dataTask: EditarTarefaDto) {
+    async update(id: string, dataTask: UpdateTaskDto) {
         const task = await this.tasksRepository.findUnique(parseInt(id))
 
         if (!task) {

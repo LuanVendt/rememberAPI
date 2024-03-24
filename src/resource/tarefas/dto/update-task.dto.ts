@@ -1,4 +1,4 @@
-export interface EditarTarefaDto {
+export interface UpdateTaskDto {
     id?: number;
     id_importancia?: number;
     id_categoria?: number;

@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth.guard";
 import { TasksService } from "./tasks.service";
-import { QueryTarefaDto } from "./dto/query-tarefa.dto";
-import { CriarTarefaDto } from "./dto/criar-tarefa.dto";
-import { EditarTarefaDto } from "./dto/editar-tarefa.dto";
+import { QueryTarefaDto } from "./dto/query-task.dto";
+import { CreateTaskDto } from "./dto/create-task.dto";
+import { UpdateTaskDto } from "./dto/update-task.dto";
+
 
 @Controller('tarefas')
 @UseGuards(JwtAuthGuard)
@@ -11,8 +12,8 @@ export class TasksController {
     constructor(private readonly tasksService: TasksService) { }
 
     @Post()
-    create(@Body() criarTarefaDto: CriarTarefaDto) {
-        return this.tasksService.create(criarTarefaDto)
+    create(@Body() createTaskDto: CreateTaskDto) {
+        return this.tasksService.create(createTaskDto)
     }
 
     @Get()
@@ -26,8 +27,8 @@ export class TasksController {
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() editarTarefaDto: EditarTarefaDto) {
-        return this.tasksService.update(id, editarTarefaDto)
+    update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+        return this.tasksService.update(id, updateTaskDto)
     }
 
     @Delete(':id')

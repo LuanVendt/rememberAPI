@@ -1,4 +1,4 @@
-export interface UsuarioQueryDto {
+export interface QueryUserDto {
     page?: number;
     limit?: number;
     search?: string;

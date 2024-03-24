@@ -1,4 +1,4 @@
-export interface EditarUsuarioDto {
+export interface UpdateUserDto {
     id?: number
     nome?: string
     email?: string

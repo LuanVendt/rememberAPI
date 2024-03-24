@@ -1,16 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { TasksRepository } from "../tasks.repository";
 import { PrismaService } from "src/database/PrismaService";
-import { CriarTarefaDto } from "../../dto/criar-tarefa.dto";
+import { CreateTaskDto } from "../../dto/create-task.dto";
 import { TaskEntity } from "../../entities/task-entity";
-import { QueryTarefaDto } from "../../dto/query-tarefa.dto";
-import { EditarTarefaDto } from "../../dto/editar-tarefa.dto";
+import { QueryTarefaDto } from "../../dto/query-task.dto";
+import { UpdateTaskDto } from "../../dto/update-task.dto";
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
     constructor(private prisma: PrismaService) { }
 
-    async create(data: CriarTarefaDto): Promise<TaskEntity> {
+    async create(data: CreateTaskDto): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.create({
             data: {
                 id_usuario: data.id_usuario,
@@ -125,7 +125,7 @@ export class PrismaTasksRepository implements TasksRepository {
         return task
     }
 
-    async update(id: number, dataTask: EditarTarefaDto): Promise<TaskEntity> {
+    async update(id: number, dataTask: UpdateTaskDto): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.update({
             where: {
                 id,

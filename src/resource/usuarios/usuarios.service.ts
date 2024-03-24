@@ -1,16 +1,16 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { EntidadeUsuario } from "./entidades/entidade-usuario";
-import { CriarUsuarioDto } from "./dto/criar-usuario.dto";
-import { UsuariosRepository } from "./repositorios/usuarios.repository";
-import { UsuarioQueryDto } from "./dto/usuario-query.dto";
-import { EditarUsuarioDto } from "./dto/editar-usuario.dto";
+import { UserEntity } from "./entidades/user-entity";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UsersRepository } from "./repositorios/users.repository";
+import { QueryUserDto } from "./dto/query-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 import { NotFoundError } from "rxjs";
 
 @Injectable()
-export class UsuariosService {
-    constructor(private usersRepository: UsuariosRepository) { }
+export class UsersService {
+    constructor(private usersRepository: UsersRepository) { }
 
-    async create(data: CriarUsuarioDto) {
+    async create(data: CreateUserDto) {
         if (!data.nome) {
             throw new BadRequestException('Nome é obrigatório.')
         }
@@ -34,7 +34,7 @@ export class UsuariosService {
         const user = await this.usersRepository.create(data)
     }
 
-    async findAll(query: UsuarioQueryDto) {
+    async findAll(query: QueryUserDto) {
         const users = await this.usersRepository.findAll(query)
 
         return users
@@ -50,7 +50,7 @@ export class UsuariosService {
         return user
     }
 
-    async update(id: string, dataUser: EditarUsuarioDto) {
+    async update(id: string, dataUser: UpdateUserDto) {
         const user = await this.usersRepository.findUnique(parseInt(id))
 
         if (!user) {

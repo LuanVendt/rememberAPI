@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
-import { UsuariosRepository } from "../usuarios.repository";
+import { UsersRepository } from "../users.repository";
 import { PrismaService } from "src/database/PrismaService";
-import { CriarUsuarioDto } from "../../dto/criar-usuario.dto";
-import { UsuarioQueryDto } from "../../dto/usuario-query.dto";
-import { EditarUsuarioDto } from "../../dto/editar-usuario.dto";
+import { CreateUserDto } from "../../dto/create-user.dto";
+import { QueryUserDto } from "../../dto/query-user.dto";
+import { UpdateUserDto } from "../../dto/update-user.dto";
 
 @Injectable()
-export class PrismaUsersRepository implements UsuariosRepository {
+export class PrismaUsersRepository implements UsersRepository {
     constructor(
         private prisma: PrismaService,
     ) { }
 
-    async create(data: CriarUsuarioDto) {
+    async create(data: CreateUserDto) {
         const findedUser = await this.prisma.usuarios.findFirst({
             where: {
                 email: data.email
@@ -34,7 +34,7 @@ export class PrismaUsersRepository implements UsuariosRepository {
         })
     }
 
-    async findAll(query: UsuarioQueryDto) {
+    async findAll(query: QueryUserDto) {
         let { page = 1, limit = 10, search = '', nome, email, telefone, data_nasc, criado_em, editado_em } = query;
 
         page = Number(page);
@@ -120,7 +120,7 @@ export class PrismaUsersRepository implements UsuariosRepository {
         return user
     }
 
-    async update(id: number, dataUser: EditarUsuarioDto) {
+    async update(id: number, dataUser: UpdateUserDto) {
         const user = await this.prisma.usuarios.update({
             where: {
                 id,
