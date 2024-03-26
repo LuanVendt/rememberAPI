@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { TasksRepository } from "./repositories/tasks.repository";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { QueryTarefaDto } from "./dto/query-task.dto";
@@ -9,78 +9,50 @@ import { UpdateTaskDto } from "./dto/update-task.dto";
 export class TasksService {
     constructor(private tasksRepository: TasksRepository) { }
 
-    async create(data: CreateTaskDto) {
-        if (!data.id_usuario) {
-            throw new BadRequestException('Usuário é obrigatório.')
-        }
+    async create(currentUserId: string, data: CreateTaskDto) {
 
-        if (!data.id_importancia) {
-            throw new BadRequestException('Importância é obrigatório.')
-        }
-
-        if (!data.id_categoria) {
-            throw new BadRequestException('Categoria é obrigatório.')
-        }
-
-        if (!data.id_status) {
-            throw new BadRequestException('Status é obrigatório.')
-        }
-
-        if (!data.nome) {
-            throw new BadRequestException('Nome é obrigatório.')
-        }
-
-        if (!data.descricao) {
-            throw new BadRequestException('Descricao é obrigatório.')
-        }
-
-        if (!data.anotacao) {
-            throw new BadRequestException('Anotação é obrigatório.')
-        }
-
-        if (!data.data_vencimento) {
-            throw new BadRequestException('Data de Vencimento é obrigatório.')
-        }
-
-        const task = await this.tasksRepository.create(data)
+        const task = await this.tasksRepository.create(currentUserId, data)
     }
 
-    async findAll(query: QueryTarefaDto) {
-        const tasks = await this.tasksRepository.findAll(query)
+    async findAll(currentUserId: string, query: QueryTarefaDto) {
+        const tasks = await this.tasksRepository.findAll(currentUserId, query)
 
         return tasks
     }
 
-    async findUnique(id: string) {
-        const intInt = parseInt(id)
-        const task = await this.tasksRepository.findUnique(intInt)
+    async findUnique(currentUserId: string, id: string) {
+        const task = await this.tasksRepository.findUnique(currentUserId, id)
 
         if (!task) {
             throw new NotFoundException('Task not found.')
+        }
+
+        if (parseInt(currentUserId) !== task.id_usuario) {
+            throw new UnauthorizedException('Usuário não autorizado.')
         }
 
         return task
     }
 
-    async update(id: string, dataTask: UpdateTaskDto) {
-        const task = await this.tasksRepository.findUnique(parseInt(id))
+    async update(currentUserId: string, id: string, dataTask: UpdateTaskDto) {
+        const task = await this.tasksRepository.findUnique(currentUserId, id)
 
         if (!task) {
             throw new NotFoundException('Task not found.')
         }
 
-        const updatedTask = await this.tasksRepository.update(parseInt(id), dataTask)
+        const updatedTask = await this.tasksRepository.update(currentUserId, id, dataTask)
 
         return updatedTask
     }
 
-    async delete(id: string) {
-        const task = await this.tasksRepository.findUnique(parseInt(id))
+    async delete(currentUserId: string, id: string) {
+        const task = await this.tasksRepository.findUnique(currentUserId, id)
 
         if (!task) {
             throw new NotFoundException('Task not found.')
         }
 
-        await this.tasksRepository.delete(parseInt(id))
+        await this.tasksRepository.delete(currentUserId, id)
     }
 }

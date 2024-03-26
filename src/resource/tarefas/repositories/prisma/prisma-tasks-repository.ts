@@ -10,10 +10,10 @@ import { UpdateTaskDto } from "../../dto/update-task.dto";
 export class PrismaTasksRepository implements TasksRepository {
     constructor(private prisma: PrismaService) { }
 
-    async create(data: CreateTaskDto): Promise<TaskEntity> {
+    async create(currentUserId: string, data: CreateTaskDto): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.create({
             data: {
-                id_usuario: data.id_usuario,
+                id_usuario: parseInt(currentUserId),
                 id_importancia: data.id_importancia,
                 id_categoria: data.id_categoria,
                 id_status: data.id_status,
@@ -29,8 +29,8 @@ export class PrismaTasksRepository implements TasksRepository {
         return task
     }
 
-    async findAll(query: QueryTarefaDto) {
-        let { page = 1, limit = 10, search = '', nome, descricao, anotacao, data_criacao, criado_em, data_vencimento, editado_em, excluido_em } = query;
+    async findAll(currentUserId: string, query: QueryTarefaDto) {
+        let { page = 1, limit = 10, search = '', nome, descricao, anotacao, data_criacao, criado_em, data_vencimento } = query;
 
         page = Number(page);
         limit = Number(limit);
@@ -39,6 +39,7 @@ export class PrismaTasksRepository implements TasksRepository {
         const skip = (page - 1) * limit;
 
         let whereCondition: any = {
+            id_usuario: parseInt(currentUserId),
             excluido_em: null,
         };
 
@@ -50,8 +51,6 @@ export class PrismaTasksRepository implements TasksRepository {
                 { data_criacao: { contains: search } },
                 { criado_em: { contains: search } },
                 { data_vencimento: { contains: search } },
-                { editado_em: { contains: search } },
-                { excluido_em: { contains: search } },
             ];
         }
 
@@ -79,15 +78,6 @@ export class PrismaTasksRepository implements TasksRepository {
             whereCondition.data_vencimento = { contains: data_vencimento };
         }
 
-        if (excluido_em) {
-            whereCondition.excluido_em = { contains: excluido_em };
-        }
-
-        if (editado_em) {
-            whereCondition.editado_em = { contains: editado_em };
-        }
-
-
         const total = await this.prisma.tarefas.count({
             where: {
                 excluido_em: null,
@@ -114,10 +104,11 @@ export class PrismaTasksRepository implements TasksRepository {
         };
     }
 
-    async findUnique(id: number): Promise<TaskEntity> {
+    async findUnique(currentUserId: string, id: string): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.findUnique({
             where: {
-                id,
+                id: parseInt(id),
+                id_usuario: parseInt(currentUserId),
                 excluido_em: null,
             }
         })
@@ -125,10 +116,11 @@ export class PrismaTasksRepository implements TasksRepository {
         return task
     }
 
-    async update(id: number, dataTask: UpdateTaskDto): Promise<TaskEntity> {
+    async update(currentUserId: string, id: string, dataTask: UpdateTaskDto): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.update({
             where: {
-                id,
+                id: parseInt(id),
+                id_usuario: parseInt(currentUserId),
                 excluido_em: null,
             },
             data: {
@@ -146,10 +138,12 @@ export class PrismaTasksRepository implements TasksRepository {
         return task
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(currentUserId: string, id: string): Promise<void> {
+        console.log('USUARIO ID', currentUserId)
         const task = await this.prisma.tarefas.update({
             where: {
-                id,
+                id: parseInt(id),
+                id_usuario: parseInt(currentUserId),
                 excluido_em: null,
             },
             data: {

@@ -4,6 +4,8 @@ import { TasksService } from "./tasks.service";
 import { QueryTarefaDto } from "./dto/query-task.dto";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
+import { CurrentUser } from "src/auth/decorators/current-user.decorator";
+import { UserEntity } from "../usuarios/entidades/user-entity";
 
 
 @Controller('tarefas')
@@ -12,27 +14,27 @@ export class TasksController {
     constructor(private readonly tasksService: TasksService) { }
 
     @Post()
-    create(@Body() createTaskDto: CreateTaskDto) {
-        return this.tasksService.create(createTaskDto)
+    create(@CurrentUser() currentUser: UserEntity, @Body() createTaskDto: CreateTaskDto) {
+        return this.tasksService.create(String(currentUser.id), createTaskDto)
     }
 
     @Get()
-    findAll(@Query() query: QueryTarefaDto) {
-        return this.tasksService.findAll(query)
+    findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {
+        return this.tasksService.findAll(String(currentUser.id), query)
     }
 
     @Get(':id')
-    findUnique(@Param('id') id: string) {
-        return this.tasksService.findUnique(id)
+    findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
+        return this.tasksService.findUnique(String(currentUser.id), id)
     }
 
     @Put(':id')
-    update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-        return this.tasksService.update(id, updateTaskDto)
+    update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+        return this.tasksService.update(String(currentUser.id), id, updateTaskDto)
     }
 
     @Delete(':id')
-    delete(@Param('id') id: string) {
-        return this.tasksService.delete(id)
+    delete(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
+        return this.tasksService.delete(String(currentUser.id), id)
     }
 }

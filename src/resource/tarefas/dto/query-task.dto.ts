@@ -1,4 +1,4 @@
-export interface QueryTarefaDto {
+export class QueryTarefaDto {
     page?: number;
     limit?: number;
     search?: string;
@@ -8,6 +8,4 @@ export interface QueryTarefaDto {
     data_criacao?: Date;
     data_vencimento?: Date;
     criado_em?: Date;
-    editado_em?: Date;
-    excluido_em?: Date;
 }

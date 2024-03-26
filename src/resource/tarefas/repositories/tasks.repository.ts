@@ -5,9 +5,9 @@ import { UpdateTaskDto } from "../dto/update-task.dto";
 import { TaskEntity } from "../entities/task-entity";
 
 export abstract class TasksRepository {
-    abstract create(data: CreateTaskDto): Promise<TaskEntity>
-    abstract findAll(query: QueryTarefaDto)
-    abstract findUnique(id: number): Promise<TaskEntity>
-    abstract update(id: number, dataTask: UpdateTaskDto): Promise<TaskEntity>
-    abstract delete(id: number): Promise<void>
+    abstract create(currentUserId: string, data: CreateTaskDto): Promise<TaskEntity>
+    abstract findAll(currentUserId: string, query: QueryTarefaDto)
+    abstract findUnique(currentUserId: string, id: string): Promise<TaskEntity>
+    abstract update(currentUserId: string, id: string, dataTask: UpdateTaskDto): Promise<TaskEntity>
+    abstract delete(currentUserId: string, id: string): Promise<void>
 }   
