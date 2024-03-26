@@ -11,26 +11,6 @@ export class UsersService {
     constructor(private usersRepository: UsersRepository) { }
 
     async create(data: CreateUserDto) {
-        if (!data.nome) {
-            throw new BadRequestException('Nome é obrigatório.')
-        }
-
-        if (!data.email) {
-            throw new BadRequestException('Email é obrigatório.')
-        }
-
-        if (!data.data_nasc) {
-            throw new BadRequestException('Data de nascimento é obrigatório.')
-        }
-
-        if (!data.telefone) {
-            throw new BadRequestException('Telefone é obrigatório.')
-        }
-
-        if (!data.senha) {
-            throw new BadRequestException('Senha é obrigatório.')
-        }
-
         const user = await this.usersRepository.create(data)
     }
 

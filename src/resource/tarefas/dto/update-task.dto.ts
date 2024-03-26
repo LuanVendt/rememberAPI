@@ -1,39 +1,35 @@
-import { IsDate, IsNumber, IsString } from "class-validator";
+import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class UpdateTaskDto {
     @IsNumber()
-    id?: number;
-
-    @IsNumber()
+    @IsOptional()
     id_importancia?: number;
 
     @IsNumber()
+    @IsOptional()
     id_categoria?: number;
 
     @IsNumber()
+    @IsOptional()
     id_status?: number;
 
     @IsString()
+    @IsOptional()
     nome?: string;
 
     @IsString()
+    @IsOptional()
     descricao?: string;
 
     @IsString()
+    @IsOptional()
     anotacao?: string;
 
     @IsDate()
+    @IsOptional()
     data_criacao?: Date;
 
     @IsDate()
+    @IsOptional()
     data_vencimento?: Date;
-
-    @IsDate()
-    criado_em?: Date;
-
-    @IsDate()
-    editado_em?: Date;
-
-    @IsDate()
-    excluido_em?: Date;
 }

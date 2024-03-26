@@ -10,7 +10,6 @@ export class TasksService {
     constructor(private tasksRepository: TasksRepository) { }
 
     async create(currentUserId: string, data: CreateTaskDto) {
-
         const task = await this.tasksRepository.create(currentUserId, data)
     }
 

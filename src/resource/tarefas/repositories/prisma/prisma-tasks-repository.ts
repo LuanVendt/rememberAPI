@@ -139,7 +139,6 @@ export class PrismaTasksRepository implements TasksRepository {
     }
 
     async delete(currentUserId: string, id: string): Promise<void> {
-        console.log('USUARIO ID', currentUserId)
         const task = await this.prisma.tarefas.update({
             where: {
                 id: parseInt(id),

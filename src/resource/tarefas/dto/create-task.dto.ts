@@ -1,13 +1,6 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateTaskDto {
-    @IsNumber()
-    id?: number;
-
-    @IsNumber()
-    @IsNotEmpty()
-    id_usuario: number;
-
     @IsNumber()
     @IsNotEmpty()
     id_importancia: number;
@@ -32,6 +25,6 @@ export class CreateTaskDto {
     @IsNotEmpty()
     anotacao: string;
 
-    @IsDate()
+    @IsOptional()
     data_vencimento?: Date;
 }
