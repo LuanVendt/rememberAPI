@@ -116,6 +116,12 @@ export class PrismaTasksRepository implements TasksRepository {
         return task
     }
 
+    async findAllCategories() {
+        const categories = await this.prisma.categorias.findMany()
+
+        return categories
+    }
+
     async update(currentUserId: string, id: string, dataTask: UpdateTaskDto): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.update({
             where: {

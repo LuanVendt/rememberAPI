@@ -33,6 +33,10 @@ export class TasksService {
         return task
     }
 
+    async findAllCategories() {
+        return this.tasksRepository.findAllCategories()
+    }
+
     async update(currentUserId: string, id: string, dataTask: UpdateTaskDto) {
         const task = await this.tasksRepository.findUnique(currentUserId, id)
 

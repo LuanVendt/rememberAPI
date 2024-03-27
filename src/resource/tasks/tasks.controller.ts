@@ -14,27 +14,32 @@ export class TasksController {
     constructor(private readonly tasksService: TasksService) { }
 
     @Post()
-    create(@CurrentUser() currentUser: UserEntity, @Body() createTaskDto: CreateTaskDto) {
+    async create(@CurrentUser() currentUser: UserEntity, @Body() createTaskDto: CreateTaskDto) {
         return this.tasksService.create(String(currentUser.id), createTaskDto)
     }
 
     @Get()
-    findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {
+    async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {
         return this.tasksService.findAll(String(currentUser.id), query)
     }
 
-    @Get(':id')
-    findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
+    @Get('/:id')
+    async findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
         return this.tasksService.findUnique(String(currentUser.id), id)
     }
 
-    @Put(':id')
-    update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    @Get('categorias')
+    async findAllCategories() {
+        return this.tasksService.findAllCategories()
+    }
+
+    @Put('/:id')
+    async update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
         return this.tasksService.update(String(currentUser.id), id, updateTaskDto)
     }
 
-    @Delete(':id')
-    delete(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
+    @Delete('/:id')
+    async delete(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
         return this.tasksService.delete(String(currentUser.id), id)
     }
 }
