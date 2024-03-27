@@ -23,22 +23,23 @@ export class TasksController {
         return this.tasksService.findAll(String(currentUser.id), query)
     }
 
-    @Get('/:id')
-    async findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
-        return this.tasksService.findUnique(String(currentUser.id), id)
-    }
-
     @Get('categorias')
     async findAllCategories() {
         return this.tasksService.findAllCategories()
     }
 
-    @Put('/:id')
+    @Get(':id')
+    async findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
+        return this.tasksService.findUnique(String(currentUser.id), id)
+    }
+
+
+    @Put(':id')
     async update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
         return this.tasksService.update(String(currentUser.id), id, updateTaskDto)
     }
 
-    @Delete('/:id')
+    @Delete(':id')
     async delete(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
         return this.tasksService.delete(String(currentUser.id), id)
     }
