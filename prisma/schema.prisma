@@ -25,7 +25,7 @@ model usuarios {
     editado_em             DateTime?
     excluido_em            DateTime?
     tarefas                tarefas[]
-    categoria_usuario      categoria_usuario?
+    // categoria_usuario      categoria_usuario?
     usuario_tema           usuario_tema[]
     usuario_medalha        usuario_medalha?
     consultas              consultas[]
@@ -65,18 +65,18 @@ model categorias {
     id                Int                @id @unique @default(autoincrement())
     nome              String
     tarefas           tarefas[]
-    categoria_usuario categoria_usuario?
+
 }
 
-model categoria_usuario {
-    id_categoria Int @unique
-    id_usuario   Int @unique
+// model categoria_usuario {
+//     id_categoria Int @unique
+//     id_usuario   Int @unique
 
-    categoria categorias @relation(fields: [id_categoria], references: [id])
-    usuarios  usuarios   @relation(fields: [id_usuario], references: [id])
+//     categoria categorias @relation(fields: [id_categoria], references: [id])
+//     usuarios  usuarios   @relation(fields: [id_usuario], references: [id])
 
-    @@id([id_categoria, id_usuario])
-}
+//     @@id([id_categoria, id_usuario])
+// }
 
 model status {
     id      Int       @id @unique @default(autoincrement())
