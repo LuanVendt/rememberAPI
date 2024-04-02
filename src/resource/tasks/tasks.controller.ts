@@ -27,12 +27,12 @@ export class TasksController {
     async findAllCategories() {
         return this.tasksService.findAllCategories()
     }
-
+    
     @Get(':id')
     async findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
         return this.tasksService.findUnique(String(currentUser.id), id)
     }
-
+    
 
     @Put(':id')
     async update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
