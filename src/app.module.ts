@@ -26,7 +26,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         // }),
         AuthModule,
         UsersModule,
-        TasksModule
+        TasksModule,
     ],
     controllers: [AppController], // EmailController
     providers: [AppService],
