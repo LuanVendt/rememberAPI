@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { UsersRepository } from "../users.repository";
 import { PrismaService } from "src/database/PrismaService";
 import { CreateUserDto } from "../../dto/create-user.dto";
@@ -19,7 +19,7 @@ export class PrismaUsersRepository implements UsersRepository {
         })
 
         if (findedUser) {
-            throw new Error('Email já cadastrado.')
+            throw new BadRequestException('Email já cadastrado.')
         }
 
         const user = await this.prisma.usuarios.create({
