@@ -30,7 +30,7 @@ export class AuthService {
         if (!usuario) {
             throw new BadRequestException('Invalid Credentials.')
         }
-        if (dataLogin.password !== usuario.senha[0]) {
+        if (!this.comparePasswords(dataLogin.password, usuario.senha[0])) {
             throw new BadRequestException('Invalid Credentials.')
         }
 
