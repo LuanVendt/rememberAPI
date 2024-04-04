@@ -85,7 +85,7 @@ export class PrismaTasksRepository implements TasksRepository {
             },
         });
 
-        const users = await this.prisma.tarefas.findMany({
+        const tasks = await this.prisma.tarefas.findMany({
             where: {
                 excluido_em: null,
                 ...whereCondition
@@ -100,7 +100,7 @@ export class PrismaTasksRepository implements TasksRepository {
             search,
             limit,
             pages: Math.ceil(total / limit),
-            data: users,
+            data: tasks,
         };
     }
 
