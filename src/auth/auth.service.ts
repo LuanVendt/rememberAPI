@@ -30,9 +30,9 @@ export class AuthService {
         if (!usuario) {
             throw new BadRequestException('Invalid Credentials.')
         }
-        // if (!this.comparePasswords(dataLogin.password, usuario.senha[0])) {
-        //     throw new BadRequestException('Invalid Credentials.')
-        // }
+        if (dataLogin.password !== usuario.senha[0]) {
+            throw new BadRequestException('Invalid Credentials.')
+        }
 
         const payload = { id: usuario.id }
         const token = this.jwtService.sign(payload)
