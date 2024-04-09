@@ -3,11 +3,11 @@ import { JwtAuthGuard } from "src/auth/guard/jwt-auth.guard";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { QueryUserDto } from "./dto/query-user.dto";
-import { UsersService } from "./usuarios.service";
+import { UsersService } from "./users.service";
 
 @Controller('usuario')
 @UseGuards(JwtAuthGuard)
-export class UsuariosController {
+export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Get()

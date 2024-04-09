@@ -5,7 +5,7 @@ import { QueryTarefaDto } from "./dto/query-task.dto";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
-import { UserEntity } from "../usuarios/entidades/user-entity";
+import { UserEntity } from "../usuarios/entities/user-entity";
 
 
 @Controller('tarefas')
@@ -27,12 +27,12 @@ export class TasksController {
     async findAllCategories() {
         return this.tasksService.findAllCategories()
     }
-    
+
     @Get(':id')
     async findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
         return this.tasksService.findUnique(String(currentUser.id), id)
     }
-    
+
 
     @Put(':id')
     async update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {

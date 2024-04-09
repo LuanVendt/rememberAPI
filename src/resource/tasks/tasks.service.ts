@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
-import { TasksRepository } from "./repositories/tasks.repository";
+import { TasksRepository } from "./repositorios/tasks.repository";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { QueryTarefaDto } from "./dto/query-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
