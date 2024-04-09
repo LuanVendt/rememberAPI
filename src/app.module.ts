@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './resource/users/users.module';
+import { UsersModule } from './resource/usuarios/users.module';
 import { TasksModule } from './resource/tasks/tasks.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 // import { EmailController } from './resource/usuarios/email-controller';
