@@ -12,6 +12,7 @@ export class CreateUserDto {
     @IsNotEmpty()
     data_nasc: Date
 
+
     telefone: string
     senha: string
 }
