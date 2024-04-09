@@ -16,7 +16,7 @@ datasource db {
 model usuarios {
     id                     Int                      @id @unique @default(autoincrement())
     nome                   String
-    email                  String
+    email                  String                   @unique
     data_nasc              DateTime
     telefone               String
     senha                  String
@@ -62,10 +62,9 @@ model importancia {
 }
 
 model categorias {
-    id                Int                @id @unique @default(autoincrement())
-    nome              String
-    tarefas           tarefas[]
-
+    id      Int       @id @unique @default(autoincrement())
+    nome    String
+    tarefas tarefas[]
 }
 
 // model categoria_usuario {

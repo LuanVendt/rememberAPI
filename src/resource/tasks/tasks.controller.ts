@@ -5,7 +5,7 @@ import { QueryTarefaDto } from "./dto/query-task.dto";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
-import { UserEntity } from "../users/entities/user-entity";
+import { UserEntity } from "../usuarios/entities/user-entity";
 
 
 @Controller('tarefas')

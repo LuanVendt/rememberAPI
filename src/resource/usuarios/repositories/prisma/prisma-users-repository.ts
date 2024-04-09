@@ -26,7 +26,7 @@ export class PrismaUsersRepository implements UsersRepository {
             data: {
                 nome: data.nome,
                 email: data.email,
-                telefone: data.telefone,
+                telefone: String(data.telefone),
                 data_nasc: new Date(data.data_nasc),
                 senha: data.senha,
                 criado_em: new Date()

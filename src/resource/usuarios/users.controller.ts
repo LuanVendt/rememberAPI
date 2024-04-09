@@ -9,7 +9,7 @@ import { UsersService } from "./users.service";
 @UseGuards(JwtAuthGuard)
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
-
+ 
     @Get()
     findAll(@Query() query: QueryUserDto) {
         return this.usersService.findAll(query)
