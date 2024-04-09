@@ -1,7 +1,7 @@
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { QueryUserDto } from "../dto/query-user.dto";
-import { UserEntity } from "../entidades/user-entity";
+import { UserEntity } from "../entities/user-entity";
 
 export abstract class UsersRepository {
     abstract create(data: CreateUserDto): Promise<void>

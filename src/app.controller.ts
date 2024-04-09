@@ -2,7 +2,7 @@ import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
 import { CurrentUser } from './auth/decorators/current-user.decorator';
-import { UserEntity } from './resource/usuarios/entidades/user-entity';
+import { UserEntity } from './resource/users/entities/user-entity';
 
 @Controller()
 @UseGuards(JwtAuthGuard)
