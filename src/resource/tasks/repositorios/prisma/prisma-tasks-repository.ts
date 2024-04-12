@@ -14,9 +14,9 @@ export class PrismaTasksRepository implements TasksRepository {
         const task = await this.prisma.tarefas.create({
             data: {
                 id_usuario: parseInt(currentUserId),
-                id_importancia: data.id_importancia,
                 id_categoria: data.id_categoria,
                 id_prioridade: data.id_prioridade,
+                id_status: data.id_status,
                 nome: data.nome,
                 descricao: data.descricao,
                 anotacao: data.anotacao,
@@ -130,7 +130,6 @@ export class PrismaTasksRepository implements TasksRepository {
                 excluido_em: null,
             },
             data: {
-                id_importancia: dataTask.id_importancia,
                 id_categoria: dataTask.id_categoria,
                 id_prioridade: dataTask.id_prioridade,
                 nome: dataTask.nome,

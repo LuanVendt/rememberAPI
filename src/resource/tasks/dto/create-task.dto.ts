@@ -3,15 +3,15 @@ import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-valida
 export class CreateTaskDto {
     @IsNumber()
     @IsNotEmpty()
-    id_importancia: number;
-
-    @IsNumber()
-    @IsNotEmpty()
     id_categoria: number;
 
     @IsNumber()
     @IsNotEmpty()
     id_prioridade: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    id_status: number;
 
     @IsString()
     @IsNotEmpty()

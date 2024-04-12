@@ -36,8 +36,8 @@ model usuarios {
 model tarefas {
     id              Int       @id @unique @default(autoincrement())
     id_usuario      Int
-    id_importancia  Int
     id_categoria    Int
+    id_status       Int       @default(1)
     id_prioridade   Int       @default(1)
     nome            String
     descricao       String
@@ -49,7 +49,7 @@ model tarefas {
     excluido_em     DateTime?
 
     usuarios     usuarios       @relation(fields: [id_usuario], references: [id])
-    importancia  importancia    @relation(fields: [id_prioridade], references: [id])
+    status       status         @relation(fields: [id_status], references: [id])
     categoria    categorias     @relation(fields: [id_categoria], references: [id])
     prioridade   prioridade     @relation(fields: [id_prioridade], references: [id])
     anexos       anexos[]
@@ -66,29 +66,19 @@ model lista_tarefa {
     tarefas tarefas @relation(fields: [id_tarefa], references: [id])
 }
 
-model importancia {
-    id      Int       @id @unique @default(autoincrement())
-    nome    String
-    tarefas tarefas[]
-}
-
 model categorias {
     id      Int       @id @unique @default(autoincrement())
     nome    String
     tarefas tarefas[]
 }
 
-// model categoria_usuario {
-//     id_categoria Int @unique
-//     id_usuario   Int @unique
-
-//     categoria categorias @relation(fields: [id_categoria], references: [id])
-//     usuarios  usuarios   @relation(fields: [id_usuario], references: [id])
-
-//     @@id([id_categoria, id_usuario])
-// }
-
 model prioridade {
+    id      Int       @id @unique @default(autoincrement())
+    nome    String
+    tarefas tarefas[]
+}
+
+model status {
     id      Int       @id @unique @default(autoincrement())
     nome    String
     tarefas tarefas[]

@@ -3,15 +3,15 @@ import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 export class UpdateTaskDto {
     @IsNumber()
     @IsOptional()
-    id_importancia?: number;
-
-    @IsNumber()
-    @IsOptional()
     id_categoria?: number;
 
     @IsNumber()
     @IsOptional()
     id_prioridade?: number;
+
+    @IsNumber()
+    @IsOptional()
+    id_status?: number;
 
     @IsString()
     @IsOptional()
