@@ -16,7 +16,7 @@ export class PrismaTasksRepository implements TasksRepository {
                 id_usuario: parseInt(currentUserId),
                 id_importancia: data.id_importancia,
                 id_categoria: data.id_categoria,
-                id_status: data.id_status,
+                id_prioridade: data.id_prioridade,
                 nome: data.nome,
                 descricao: data.descricao,
                 anotacao: data.anotacao,
@@ -132,7 +132,7 @@ export class PrismaTasksRepository implements TasksRepository {
             data: {
                 id_importancia: dataTask.id_importancia,
                 id_categoria: dataTask.id_categoria,
-                id_status: dataTask.id_status,
+                id_prioridade: dataTask.id_prioridade,
                 nome: dataTask.nome,
                 descricao: dataTask.descricao,
                 anotacao: dataTask.anotacao,

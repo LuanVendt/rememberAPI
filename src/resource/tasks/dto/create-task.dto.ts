@@ -11,7 +11,7 @@ export class CreateTaskDto {
 
     @IsNumber()
     @IsNotEmpty()
-    id_status: number;
+    id_prioridade: number;
 
     @IsString()
     @IsNotEmpty()

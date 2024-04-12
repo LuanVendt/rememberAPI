@@ -11,7 +11,7 @@ export class UpdateTaskDto {
 
     @IsNumber()
     @IsOptional()
-    id_status?: number;
+    id_prioridade?: number;
 
     @IsString()
     @IsOptional()
