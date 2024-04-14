@@ -28,10 +28,10 @@ export class AuthService {
         })
 
         if (!usuario) {
-            throw new BadRequestException('Invalid Credentials.')
+            throw new BadRequestException('Credenciais inválidas.')
         }
         if (!this.comparePasswords(dataLogin.password, usuario.senha[0])) {
-            throw new BadRequestException('Invalid Credentials.')
+            throw new BadRequestException('Credenciais inválidas.')
         }
 
         const payload = { id: usuario.id }
@@ -67,11 +67,11 @@ export class AuthService {
         })
 
         if (!token) {
-            throw new BadRequestException('Invalid Token.')
+            throw new BadRequestException('Token inválido.')
         }
 
         if (!(await this.verifyRefreshToken(token.refreshToken))) {
-            throw new BadRequestException('Invalid Token.')
+            throw new BadRequestException('Token inválido.')
         }
 
         await this.prisma.refresh_token.update({

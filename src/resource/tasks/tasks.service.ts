@@ -23,7 +23,7 @@ export class TasksService {
         const task = await this.tasksRepository.findUnique(currentUserId, id)
 
         if (!task) {
-            throw new NotFoundException('Task not found.')
+            throw new NotFoundException('Tarefa não encontrada.')
         }
 
         if (parseInt(currentUserId) !== task.id_usuario) {
@@ -41,7 +41,7 @@ export class TasksService {
         const task = await this.tasksRepository.findUnique(currentUserId, id)
 
         if (!task) {
-            throw new NotFoundException('Task not found.')
+            throw new NotFoundException('Tarefa não encontrada.')
         }
 
         const updatedTask = await this.tasksRepository.update(currentUserId, id, dataTask)
@@ -53,7 +53,7 @@ export class TasksService {
         const task = await this.tasksRepository.findUnique(currentUserId, id)
 
         if (!task) {
-            throw new NotFoundException('Task not found.')
+            throw new NotFoundException('Tarefa não encontrada.')
         }
 
         await this.tasksRepository.delete(currentUserId, id)

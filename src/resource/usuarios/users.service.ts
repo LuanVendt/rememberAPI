@@ -24,7 +24,7 @@ export class UsersService {
         const user = await this.usersRepository.findUnique(parseInt(id))
 
         if (!user) {
-            throw new NotFoundException('User not found.')
+            throw new NotFoundException('Usuário não encontrado.')
         }
 
         return user
@@ -34,7 +34,7 @@ export class UsersService {
         const user = await this.usersRepository.findUnique(parseInt(id))
 
         if (!user) {
-            throw new NotFoundException('User not found.')
+            throw new NotFoundException('Usuário não encontrado.')
         }
 
         const updatedUser = await this.usersRepository.update(parseInt(id), dataUser)
@@ -46,7 +46,7 @@ export class UsersService {
         const user = await this.usersRepository.findUnique(parseInt(id))
 
         if (!user) {
-            throw new NotFoundException('User not found.')
+            throw new NotFoundException('Usuário não encontrado.')
         }
 
         await this.usersRepository.delete(parseInt(id))

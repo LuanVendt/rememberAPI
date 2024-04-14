@@ -11,7 +11,7 @@ export class AuthMiddleware implements NestMiddleware {
             const id = await this.authService.verifyToken(token);
 
             if (!id) {
-                throw new BadRequestException('Invalid Token');
+                throw new BadRequestException('Token inválido.');
             }
         }
         next();
