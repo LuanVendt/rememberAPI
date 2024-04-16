@@ -59,11 +59,13 @@ model tarefas {
 model lista_tarefa {
     id        Int      @id @unique @default(autoincrement())
     id_tarefa Int
-    nome_item String
+    descricao String
     criado_em DateTime @default(now())
     status    Boolean
 
     tarefas tarefas @relation(fields: [id_tarefa], references: [id])
+
+    @@unique([id, id_tarefa])
 }
 
 model categorias {
