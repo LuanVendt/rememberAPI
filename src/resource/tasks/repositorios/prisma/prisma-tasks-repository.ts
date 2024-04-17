@@ -5,6 +5,7 @@ import { CreateTaskDto } from "../../dto/create-task.dto";
 import { TaskEntity } from "../../entities/task-entity";
 import { QueryTarefaDto } from "../../dto/query-task.dto";
 import { UpdateTaskDto } from "../../dto/update-task.dto";
+import { CreateTaskItemDto } from "../../dto/create-task-item.dto";
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
@@ -26,7 +27,22 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
 
+        if (data.lista_tarefa) {
+            await this.createItem(task.id, data.lista_tarefa)
+        }
+
         return task
+    }
+
+    async createItem(taskId: number, data: CreateTaskItemDto): Promise<void> {
+        const item = await this.prisma.lista_tarefa.create({
+            data: {
+                id_tarefa: taskId,
+                descricao: data.descricao,
+                status: Boolean(data.status),
+                criado_em: new Date()
+            }
+        })
     }
 
     async findAll(currentUserId: string, query: QueryTarefaDto) {
@@ -92,6 +108,9 @@ export class PrismaTasksRepository implements TasksRepository {
             },
             skip,
             take: limit,
+            include: {
+                lista_tarefa: {}
+            }
         });
 
         return {

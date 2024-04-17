@@ -3,6 +3,7 @@ import { TasksRepository } from "./repositorios/tasks.repository";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { QueryTarefaDto } from "./dto/query-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
+import { CreateTaskItemDto } from "./dto/create-task-item.dto";
 
 
 @Injectable()
@@ -12,6 +13,16 @@ export class TasksService {
     async create(currentUserId: string, data: CreateTaskDto) {
         const task = await this.tasksRepository.create(currentUserId, data)
     }
+
+    // async createItem(currentUserId: string, data: CreateTaskItemDto) {
+    //     const findedTask = await this.tasksRepository.findUnique(currentUserId, String(data.id_tarefa))
+
+    //     if (!findedTask) {
+    //         throw new BadRequestException('Tarefa não encontrada.')
+    //     }
+
+    //     const item = await this.tasksRepository.createItem(data)
+    // }
 
     async findAll(currentUserId: string, query: QueryTarefaDto) {
         const tasks = await this.tasksRepository.findAll(currentUserId, query)

@@ -6,6 +6,7 @@ import { CreateTaskDto } from "./dto/create-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { UserEntity } from "../usuarios/entities/user-entity";
+import { CreateTaskItemDto } from "./dto/create-task-item.dto";
 
 
 @Controller('tarefas')
@@ -17,6 +18,11 @@ export class TasksController {
     async create(@CurrentUser() currentUser: UserEntity, @Body() createTaskDto: CreateTaskDto) {
         return this.tasksService.create(String(currentUser.id), createTaskDto)
     }
+
+    // @Post('lista')
+    // async createItem(@CurrentUser() CurrentUser: UserEntity, @Body() createTaskItem: CreateTaskItemDto) {
+    //     return this.tasksService.createItem(String(CurrentUser.id), createTaskItem)
+    // }
 
     @Get()
     async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {
