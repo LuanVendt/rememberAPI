@@ -15,6 +15,7 @@ datasource db {
 
 model usuarios {
     id                     Int                      @id @unique @default(autoincrement())
+    id_tema                Int                      @default(1)
     nome                   String
     email                  String                   @unique
     data_nasc              DateTime
@@ -25,12 +26,12 @@ model usuarios {
     editado_em             DateTime?
     excluido_em            DateTime?
     tarefas                tarefas[]
-    // categoria_usuario      categoria_usuario?
-    usuario_tema           usuario_tema[]
     usuario_medalha        usuario_medalha?
     consultas              consultas[]
     transacoes_financeiras transacoes_financeiras[]
     refreshToken           refresh_token[]
+
+    temas temas @relation(fields: [id_tema], references: [id])
 }
 
 model tarefas {
@@ -97,21 +98,26 @@ model anexos {
 }
 
 model temas {
-    id           Int            @id @unique @default(autoincrement())
-    cor1         String
-    cor2         String
-    cor3         String
-    usuario_tema usuario_tema[]
-}
-
-model usuario_tema {
-    id_usuario Int @unique
-    id_tema    Int @unique
-
-    tema     temas    @relation(fields: [id_tema], references: [id])
-    usuarios usuarios @relation(fields: [id_usuario], references: [id])
-
-    @@id([id_tema, id_usuario])
+    id                Int        @id @unique @default(autoincrement())
+    nome              String
+    primaryColor      String
+    secondaryColor    String
+    tertiaryColor     String
+    quaternaryColor   String
+    inputColor        String
+    fontColor         String
+    iconColor         String
+    shadowColor       String
+    userColor         String
+    gradient1Color    String
+    gradient2Color    String
+    borderBottomColor String
+    svgColor          String
+    btnAltaColor      String
+    btnMediaColor     String
+    btnBaixaColor     String
+    ativo             Boolean
+    usuarios          usuarios[]
 }
 
 model medalhas {
