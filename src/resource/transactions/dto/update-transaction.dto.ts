@@ -5,7 +5,7 @@ import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-valida
 export class UpdateTransactionDto extends PartialType(CreateTransactionDto) {
     @IsOptional({ message: 'id_usuario é obrigatório.' })
     @IsNumber({}, { message: 'id_usuario precisa ser um número inteiro.' })
-    id_usuario?: number
+    id_usuario?: string
 
     @IsOptional({ message: 'descricao é obrigatório' })
     @IsString({ message: 'descricao precisa ser uma string.' })
@@ -17,7 +17,7 @@ export class UpdateTransactionDto extends PartialType(CreateTransactionDto) {
 
     @IsOptional({ message: 'categoria é obrigatório.' })
     @IsString({ message: 'categoria precisa ser uma string.' })
-    categoria?: String
+    categoria?: string
 
     @IsOptional({ message: 'tipo é obrigatório.' })
     @IsString({ message: 'tipo precisa ser uma string.' })

@@ -4,7 +4,7 @@ export class QueryTransactionDto {
     search?: string;
     descricao?: String;
     preco?: String;
-    categoria?: String;
+    categoria?: string;
     data?: Date;
     tipo?: Date;
 }
