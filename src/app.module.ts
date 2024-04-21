@@ -6,6 +6,7 @@ import { UsersModule } from './resource/usuarios/users.module';
 import { TasksModule } from './resource/tasks/tasks.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 // import { EmailController } from './resource/usuarios/email-controller';
+import { TransactionsModule } from './resource/transactions/transactions.module';
 
 
 @Module({
@@ -27,6 +28,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         AuthModule,
         UsersModule,
         TasksModule,
+        TransactionsModule,
     ],
     controllers: [AppController], // EmailController
     providers: [AppService],
