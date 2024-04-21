@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { TransactionsRepository } from './repositories/transactions.repository';
+import { QueryTransactionDto } from './dto/query-transaction.dto';
 
 @Injectable()
 export class TransactionsService {
-  create(createTransactionDto: CreateTransactionDto) {
-    return 'This action adds a new transaction';
-  }
+    constructor(private transactionsRepository: TransactionsRepository) { }
 
-  findAll() {
-    return `This action returns all transactions`;
-  }
+    async create(currentUserId: string, data: CreateTransactionDto) {
+        const transaction = await this.transactionsRepository.create(currentUserId, data)
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} transaction`;
-  }
+    async findAll(currentUserId: string, query: QueryTransactionDto) {
+        const transactions = await this.transactionsRepository.findAll(currentUserId, query)
 
-  update(id: number, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
+        return transactions
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} transaction`;
-  }
+    async findUnique(currentUserId: string, id: string) {
+        const transaction = await this.transactionsRepository.findUnique(currentUserId, id)
+
+        if (!transaction) {
+            throw new NotFoundException('Transação não encontrada.')
+        }
+
+        if (parseInt(currentUserId) !== transaction.id_usuario) {
+            throw new UnauthorizedException('Usuário não autorizado.')
+        }
+
+        return transaction
+    }
+
+    async update(currentUserId: string, id: string, data: UpdateTransactionDto) {
+        const transaction = await this.transactionsRepository.findUnique(currentUserId, id)
+
+        const updatedTransaction = await this.transactionsRepository.update(currentUserId, id, data)
+
+        return updatedTransaction
+    }
+
+    async delete(currentUserId: string, id: string) {
+        const transaction = await this.transactionsRepository.findUnique(currentUserId, id)
+
+        await this.transactionsRepository.delete(currentUserId, id)
+    }
 }
