@@ -5,8 +5,6 @@ export class CreateTaskItemDto {
     @IsString({ message: 'descricao precisa ser uma string.' })
     descricao: string;
 
-    criado_em: Date
-
     @IsBoolean({ message: 'status precisa ser um boolean.' })
     status: Boolean
 }

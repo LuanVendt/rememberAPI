@@ -4,6 +4,7 @@ import { PrismaService } from "src/database/PrismaService";
 import { CreateUserDto } from "../../dto/create-user.dto";
 import { QueryUserDto } from "../../dto/query-user.dto";
 import { UpdateUserDto } from "../../dto/update-user.dto";
+import { equal } from "assert";
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -75,11 +76,37 @@ export class PrismaUsersRepository implements UsersRepository {
         }
 
         if (criado_em) {
-            whereCondition.criado_em = { equals: new Date(criado_em) };
+            const criadoEmString = String(criado_em);
+            const [ano, mes, dia] = criadoEmString.split('-').map(Number);
+            const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
+
+            const inicioDoDia = new Date(dataCriacao);
+            inicioDoDia.setUTCHours(0, 0, 0, 0);
+
+            const finalDoDia = new Date(dataCriacao);
+            finalDoDia.setUTCHours(23, 59, 59, 999);
+
+            whereCondition.criado_em = {
+                gte: inicioDoDia,
+                lte: finalDoDia
+            };
         }
 
         if (editado_em) {
-            whereCondition.editado_em = { equals: new Date(editado_em) };
+            const criadoEmString = String(editado_em);
+            const [ano, mes, dia] = criadoEmString.split('-').map(Number);
+            const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
+
+            const inicioDoDia = new Date(dataCriacao);
+            inicioDoDia.setUTCHours(0, 0, 0, 0);
+
+            const finalDoDia = new Date(dataCriacao);
+            finalDoDia.setUTCHours(23, 59, 59, 999);
+
+            whereCondition.editado_em = {
+                gte: inicioDoDia,
+                lte: finalDoDia
+            };
         }
 
 

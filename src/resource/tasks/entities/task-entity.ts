@@ -9,7 +9,7 @@ export interface TaskEntity {
     anotacao: string;
     data_criacao: Date;
     data_vencimento?: Date;
-    criado_em: Date;
+    criado_em?: Date;
     editado_em?: Date;
     deletado_em?: Date;
 }

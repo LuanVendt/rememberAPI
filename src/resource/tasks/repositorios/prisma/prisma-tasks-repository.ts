@@ -6,6 +6,7 @@ import { TaskEntity } from "../../entities/task-entity";
 import { QueryTarefaDto } from "../../dto/query-task.dto";
 import { UpdateTaskDto } from "../../dto/update-task.dto";
 import { CreateTaskItemDto } from "../../dto/create-task-item.dto";
+import { date } from "zod";
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
@@ -22,7 +23,7 @@ export class PrismaTasksRepository implements TasksRepository {
                 descricao: data.descricao,
                 anotacao: data.anotacao,
                 data_criacao: new Date(),
-                data_vencimento: data.data_vencimento,
+                data_vencimento: new Date(data.data_vencimento),
                 criado_em: new Date(),
             }
         })
@@ -54,6 +55,7 @@ export class PrismaTasksRepository implements TasksRepository {
 
         const skip = (page - 1) * limit;
 
+
         let whereCondition: any = {
             id_usuario: parseInt(currentUserId),
             excluido_em: null,
@@ -83,15 +85,54 @@ export class PrismaTasksRepository implements TasksRepository {
         }
 
         if (data_criacao) {
-            whereCondition.data_criacao = { equals: new Date(data_criacao) };
+            const criadoEmString = String(data_criacao);
+            const [ano, mes, dia] = criadoEmString.split('-').map(Number);
+            const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
+
+            const inicioDoDia = new Date(dataCriacao);
+            inicioDoDia.setUTCHours(0, 0, 0, 0);
+
+            const finalDoDia = new Date(dataCriacao);
+            finalDoDia.setUTCHours(23, 59, 59, 999);
+
+            whereCondition.data_criacao = {
+                gte: inicioDoDia,
+                lte: finalDoDia
+            };
         }
 
         if (criado_em) {
-            whereCondition.criado_em = { equals: new Date(criado_em) };
+            const criadoEmString = String(criado_em);
+            const [ano, mes, dia] = criadoEmString.split('-').map(Number);
+            const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
+
+            const inicioDoDia = new Date(dataCriacao);
+            inicioDoDia.setUTCHours(0, 0, 0, 0);
+
+            const finalDoDia = new Date(dataCriacao);
+            finalDoDia.setUTCHours(23, 59, 59, 999);
+
+            whereCondition.criado_em = {
+                gte: inicioDoDia,
+                lte: finalDoDia
+            };
         }
 
         if (data_vencimento) {
-            whereCondition.data_vencimento = { equals: new Date(data_vencimento) };
+            const criadoEmString = String(data_vencimento);
+            const [ano, mes, dia] = criadoEmString.split('-').map(Number);
+            const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
+
+            const inicioDoDia = new Date(dataCriacao);
+            inicioDoDia.setUTCHours(0, 0, 0, 0);
+
+            const finalDoDia = new Date(dataCriacao);
+            finalDoDia.setUTCHours(23, 59, 59, 999);
+            
+            whereCondition.data_vencimento = {
+                gte: inicioDoDia,
+                lte: finalDoDia
+            };
         }
 
         const total = await this.prisma.tarefas.count({
