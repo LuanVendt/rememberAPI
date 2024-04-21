@@ -69,23 +69,17 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
             whereCondition.tipo = { contains: tipo };
         }
 
-        const total = await this.prisma.tarefas.count({
+        const total = await this.prisma.transacoes_financeiras.count({
             where: {
                 excluido_em: null,
                 ...whereCondition
             },
         });
 
-        const transactions = await this.prisma.tarefas.findMany({
+        const transactions = await this.prisma.transacoes_financeiras.findMany({
             where: {
-                excluido_em: null,
                 ...whereCondition
             },
-            skip,
-            take: limit,
-            include: {
-                lista_tarefa: {}
-            }
         });
 
         return {
