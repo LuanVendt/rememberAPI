@@ -72,7 +72,20 @@ export class PrismaUsersRepository implements UsersRepository {
         }
 
         if (data_nasc) {
-            whereCondition.data_nasc = { equals: new Date(data_nasc) };
+            const criadoEmString = String(data_nasc);
+            const [ano, mes, dia] = criadoEmString.split('-').map(Number);
+            const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
+
+            const inicioDoDia = new Date(dataCriacao);
+            inicioDoDia.setUTCHours(0, 0, 0, 0);
+
+            const finalDoDia = new Date(dataCriacao);
+            finalDoDia.setUTCHours(23, 59, 59, 999);
+
+            whereCondition.data_nasc = {
+                gte: inicioDoDia,
+                lte: finalDoDia
+            };
         }
 
         if (criado_em) {
