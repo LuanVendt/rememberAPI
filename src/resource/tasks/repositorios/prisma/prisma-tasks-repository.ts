@@ -83,15 +83,15 @@ export class PrismaTasksRepository implements TasksRepository {
         }
 
         if (data_criacao) {
-            whereCondition.data_criacao = { contains: data_criacao };
+            whereCondition.data_criacao = { equals: new Date(data_criacao) };
         }
 
         if (criado_em) {
-            whereCondition.criado_em = { contains: criado_em };
+            whereCondition.criado_em = { equals: new Date(criado_em) };
         }
 
         if (data_vencimento) {
-            whereCondition.data_vencimento = { contains: data_vencimento };
+            whereCondition.data_vencimento = { equals: new Date(data_vencimento) };
         }
 
         const total = await this.prisma.tarefas.count({

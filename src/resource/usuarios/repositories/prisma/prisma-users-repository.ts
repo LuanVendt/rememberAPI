@@ -71,15 +71,15 @@ export class PrismaUsersRepository implements UsersRepository {
         }
 
         if (data_nasc) {
-            whereCondition.data_nasc = { contains: data_nasc };
+            whereCondition.data_nasc = { equals: new Date(data_nasc) };
         }
 
         if (criado_em) {
-            whereCondition.criado_em = { contains: criado_em };
+            whereCondition.criado_em = { equals: new Date(criado_em) };
         }
 
         if (editado_em) {
-            whereCondition.editado_em = { contains: editado_em };
+            whereCondition.editado_em = { equals: new Date(editado_em) };
         }
 
 

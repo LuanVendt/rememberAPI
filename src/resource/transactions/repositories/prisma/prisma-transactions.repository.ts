@@ -61,7 +61,7 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
         }
 
         if (data) {
-            whereCondition.data = { contains: data };
+            whereCondition.data = { equals: new Date(data) };
         }
 
         if (tipo) {
