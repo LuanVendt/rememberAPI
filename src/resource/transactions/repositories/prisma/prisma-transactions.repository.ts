@@ -13,7 +13,7 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     async create(currentUserId: string, data: CreateTransactionDto): Promise<TransactionEntity> {
         const transaction = await this.prisma.transacoes_financeiras.create({
             data: {
-                id_usuario: parseInt(data.id_usuario),
+                id_usuario: parseInt(currentUserId),
                 descricao: data.descricao,
                 preco: Number(data.preco),
                 categoria: data.categoria,

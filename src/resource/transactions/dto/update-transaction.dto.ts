@@ -3,10 +3,6 @@ import { CreateTransactionDto } from './create-transaction.dto';
 import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdateTransactionDto extends PartialType(CreateTransactionDto) {
-    @IsOptional({ message: 'id_usuario é obrigatório.' })
-    @IsNumber({}, { message: 'id_usuario precisa ser um número inteiro.' })
-    id_usuario?: string
-
     @IsOptional({ message: 'descricao é obrigatório' })
     @IsString({ message: 'descricao precisa ser uma string.' })
     descricao?: string

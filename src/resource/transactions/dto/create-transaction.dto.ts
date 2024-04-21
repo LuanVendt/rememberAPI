@@ -1,10 +1,6 @@
 import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator"
 
 export class CreateTransactionDto {
-    @IsNotEmpty({ message: 'id_usuario é obrigatório.' })
-    @IsNumber({}, { message: 'id_usuario precisa ser um número inteiro.' })
-    id_usuario: string
-
     @IsNotEmpty({ message: 'descricao é obrigatório' })
     @IsString({ message: 'descricao precisa ser uma string.' })
     descricao: string
