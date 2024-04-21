@@ -13,9 +13,6 @@ export class CreateTransactionDto {
     @IsString({ message: 'categoria precisa ser uma string.' })
     categoria: string
 
-    @IsDate({ message: 'data precisa ser uma data válida.' })
-    data?: Date
-
     @IsNotEmpty({ message: 'tipo é obrigatório.' })
     @IsString({ message: 'tipo precisa ser uma string.' })
     tipo: string

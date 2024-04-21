@@ -36,7 +36,6 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
 
         let whereCondition: any = {
             id_usuario: parseInt(currentUserId),
-            excluido_em: null,
         };
 
         if (search) {
@@ -71,7 +70,6 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
 
         const total = await this.prisma.transacoes_financeiras.count({
             where: {
-                excluido_em: null,
                 ...whereCondition
             },
         });
