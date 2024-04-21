@@ -35,6 +35,10 @@ export class TransactionsService {
     async update(currentUserId: string, id: string, data: UpdateTransactionDto) {
         const transaction = await this.transactionsRepository.findUnique(currentUserId, id)
 
+        if (!transaction) {
+            throw new NotFoundException('Transação não encontrada.')
+        }
+
         const updatedTransaction = await this.transactionsRepository.update(currentUserId, id, data)
 
         return updatedTransaction
