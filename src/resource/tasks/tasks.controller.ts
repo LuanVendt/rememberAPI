@@ -7,12 +7,16 @@ import { UpdateTaskDto } from "./dto/update-task.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { UserEntity } from "../usuarios/entities/user-entity";
 import { CreateTaskItemDto } from "./dto/create-task-item.dto";
+import { PrismaService } from "src/database/PrismaService";
 
 
 @Controller('tarefas')
 @UseGuards(JwtAuthGuard)
 export class TasksController {
-    constructor(private readonly tasksService: TasksService) { }
+    constructor(
+        private readonly tasksService: TasksService,
+        private readonly prisma: PrismaService
+    ) { }
 
     @Post()
     async create(@CurrentUser() currentUser: UserEntity, @Body() createTaskDto: CreateTaskDto) {
@@ -32,6 +36,16 @@ export class TasksController {
     @Get('categorias')
     async findAllCategories() {
         return this.tasksService.findAllCategories()
+    }
+
+    @Get('status')
+    async findAllStatus() {
+        return this.prisma.status.findMany()
+    }
+
+    @Get('prioridade')
+    async findAllPriorities() {
+        return this.prisma.prioridade.findMany()
     }
 
     @Get(':id')
