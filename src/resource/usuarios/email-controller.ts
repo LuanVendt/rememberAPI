@@ -1,22 +1,21 @@
-// import { MailerService } from "@nestjs-modules/mailer";
-// import { Body, Controller, Post } from "@nestjs/common";
+import { MailerService } from "@nestjs-modules/mailer";
+import { BadRequestException, Body, Controller, HttpCode, Post } from "@nestjs/common";
 
-// @Controller('email')
-// export class EmailController {
-//     constructor(private readonly mailerService: MailerService) { }
+@Controller('email')
+export class EmailController {
+    constructor(private readonly mailerService: MailerService) { }
 
-//     @Post('send')
-//     async sendEmail(@Body() body: any): Promise<string> {
-//         try {
-//             await this.mailerService.sendMail({
-//                 to: body.to,
-//                 subject: body.subject,
-//                 text: body.text,
-//             })
-
-//             return 'E-mail enviado com sucesso!'
-//         } catch (error) {
-//             return 'Erro ao enviar o email: ' + error
-//         }
-//     }
-// }
+    @Post('send')
+    @HttpCode(200)
+    async sendEmail(@Body() body: any): Promise<void> {
+        try {
+            await this.mailerService.sendMail({
+                to: body.to,
+                subject: body.subject,
+                text: body.text,
+            })
+        } catch (error) {
+            throw new BadRequestException('Erro ao enviar o email: ' + error)
+        }
+    }
+}
