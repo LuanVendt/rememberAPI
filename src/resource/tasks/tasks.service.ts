@@ -14,6 +14,12 @@ export class TasksService {
         const task = await this.tasksRepository.create(currentUserId, data)
     }
 
+    async createItem(currentUserId: string, data: CreateTaskItemDto) {
+        const findedTask = await this.findUnique(currentUserId, String(data.task_id))
+
+        const task = await this.tasksRepository.createItem(findedTask.id, data)
+    }
+
     async findAll(currentUserId: string, query: QueryTarefaDto) {
         const tasks = await this.tasksRepository.findAll(currentUserId, query)
 
@@ -39,7 +45,7 @@ export class TasksService {
     }
 
     async update(currentUserId: string, id: string, dataTask: UpdateTaskDto) {
-        const task = await this.tasksRepository.findUnique(currentUserId, id)
+        const task = await this.findUnique(currentUserId, id)
 
         if (!task) {
             throw new NotFoundException('Tarefa não encontrada.')
@@ -51,7 +57,7 @@ export class TasksService {
     }
 
     async delete(currentUserId: string, id: string) {
-        const task = await this.tasksRepository.findUnique(currentUserId, id)
+        const task = await this.findUnique(currentUserId, id)
 
         if (!task) {
             throw new NotFoundException('Tarefa não encontrada.')

@@ -19,10 +19,10 @@ export class TasksController {
         return this.tasksService.create(String(currentUser.id), createTaskDto)
     }
 
-    // @Post('lista')
-    // async createItem(@CurrentUser() CurrentUser: UserEntity, @Body() createTaskItem: CreateTaskItemDto) {
-    //     return this.tasksService.createItem(String(CurrentUser.id), createTaskItem)
-    // }
+    @Post('lista')
+    async createItem(@CurrentUser() CurrentUser: UserEntity, @Body() createTaskItem: CreateTaskItemDto) {
+        return this.tasksService.createItem(String(CurrentUser.id), createTaskItem)
+    }
 
     @Get()
     async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {

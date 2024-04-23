@@ -27,11 +27,6 @@ export class PrismaTasksRepository implements TasksRepository {
                 criado_em: new Date(),
             }
         })
-
-        if (data.lista_tarefa) {
-            await this.createItem(task.id, data.lista_tarefa)
-        }
-
         return task
     }
 
@@ -128,7 +123,7 @@ export class PrismaTasksRepository implements TasksRepository {
 
             const finalDoDia = new Date(dataCriacao);
             finalDoDia.setUTCHours(23, 59, 59, 999);
-            
+
             whereCondition.data_vencimento = {
                 gte: inicioDoDia,
                 lte: finalDoDia
