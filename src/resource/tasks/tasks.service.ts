@@ -40,6 +40,18 @@ export class TasksService {
         return task
     }
 
+    async findUniqueItem(currentUserId: string, taskId: string, id: string) {
+        const task = await this.findUnique(currentUserId, taskId)
+
+        const item = await this.tasksRepository.findUniqueItem(currentUserId, taskId, id)
+
+        if (!item) {
+            throw new NotFoundException('Item não encontrado.')
+        }
+
+        return item
+    }
+
     async findAllCategories() {
         return this.tasksRepository.findAllCategories()
     }
@@ -64,5 +76,11 @@ export class TasksService {
         }
 
         await this.tasksRepository.delete(currentUserId, id)
+    }
+
+    async deleteItem(currentUserId: string, taskId: string, id: string) {
+        const task = await this.findUniqueItem(currentUserId, taskId ,id)
+
+        await this.tasksRepository.deleteItem(taskId, id)
     }
 }

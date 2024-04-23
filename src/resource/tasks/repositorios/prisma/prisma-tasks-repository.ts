@@ -171,6 +171,17 @@ export class PrismaTasksRepository implements TasksRepository {
         return task
     }
 
+    async findUniqueItem(currentUserId: string, taskId: string, id: string) {
+        const item = await this.prisma.lista_tarefa.findUnique({
+            where: {
+                id: parseInt(id),
+                id_tarefa: parseInt(taskId)
+            }
+        })
+
+        return item
+    }
+
     async findAllCategories() {
         const categories = await this.prisma.categorias.findMany()
 
@@ -207,6 +218,15 @@ export class PrismaTasksRepository implements TasksRepository {
             },
             data: {
                 excluido_em: new Date()
+            }
+        })
+    }
+
+    async deleteItem(taskId: string, id: string): Promise<void> {
+        const taskItem = await this.prisma.lista_tarefa.delete({
+            where: {
+                id: parseInt(id),
+                id_tarefa: parseInt(taskId)
             }
         })
     }

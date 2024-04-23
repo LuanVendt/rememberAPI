@@ -28,6 +28,15 @@ export class TasksController {
         return this.tasksService.createItem(String(CurrentUser.id), createTaskItem)
     }
 
+    @Delete('/lista/:taskId/:itemId')
+    async deleteItem(
+        @CurrentUser() CurrentUser: UserEntity,
+        @Param('taskId') taskId: string,
+        @Param('itemId') itemId: string
+    ) {
+        return this.tasksService.deleteItem(String(CurrentUser.id), taskId, itemId)
+    }
+
     @Get()
     async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {
         return this.tasksService.findAll(String(currentUser.id), query)
