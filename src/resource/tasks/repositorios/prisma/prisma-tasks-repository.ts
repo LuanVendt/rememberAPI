@@ -7,6 +7,7 @@ import { QueryTarefaDto } from "../../dto/query-task.dto";
 import { UpdateTaskDto } from "../../dto/update-task.dto";
 import { CreateTaskItemDto } from "../../dto/create-task-item.dto";
 import { date } from "zod";
+import { equal } from "assert";
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
@@ -42,7 +43,7 @@ export class PrismaTasksRepository implements TasksRepository {
     }
 
     async findAll(currentUserId: string, query: QueryTarefaDto) {
-        let { page = 1, limit = 10, search = '', nome, descricao, anotacao, data_criacao, criado_em, data_vencimento } = query;
+        let { page = 1, limit = 10, search = '', id_categoria, id_prioridade, id_status, nome, descricao, anotacao, data_criacao, criado_em, data_vencimento } = query;
 
         page = Number(page);
         limit = Number(limit);
@@ -64,6 +65,9 @@ export class PrismaTasksRepository implements TasksRepository {
                 { data_criacao: { contains: search } },
                 { criado_em: { contains: search } },
                 { data_vencimento: { contains: search } },
+                { id_status: { contains: search } },
+                { id_categoria: { contains: search } },
+                { id_prioridade: { contains: search } },
             ];
         }
 
@@ -75,8 +79,16 @@ export class PrismaTasksRepository implements TasksRepository {
             whereCondition.descricao = { contains: descricao };
         }
 
-        if (anotacao) {
-            whereCondition.anotacao = { contains: anotacao };
+        if (id_categoria) {
+            whereCondition.id_categoria = { equals: parseInt(id_categoria) };
+        }
+
+        if (id_status) {
+            whereCondition.id_status = { equals: parseInt(id_status) };
+        }
+
+        if (id_prioridade) {
+            whereCondition.id_prioridade = { equals: parseInt(id_prioridade) };
         }
 
         if (data_criacao) {

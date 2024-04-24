@@ -38,8 +38,8 @@ model tarefas {
     id              Int       @id @unique @default(autoincrement())
     id_usuario      Int
     id_categoria    Int
-    id_status       Int       @default(1)
-    id_prioridade   Int       @default(1)
+    id_status       Int
+    id_prioridade   Int
     nome            String
     descricao       String
     anotacao        String
