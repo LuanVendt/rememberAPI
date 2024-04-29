@@ -12,7 +12,8 @@ export class CreateUserDto {
     @IsNotEmpty({ message: "O campo 'data_nasc' não pode estar vazio." })
     data_nasc: Date
 
-
+    @IsNotEmpty({ message: "O campo 'telefone' não pode estar vazio." })
+    @IsString({ message: "O campo 'telefone' deve ser uma string." })
     telefone: string
     senha: string
 }
