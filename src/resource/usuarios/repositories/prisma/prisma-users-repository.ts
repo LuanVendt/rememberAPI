@@ -1,10 +1,9 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { UsersRepository } from "../users.repository";
 import { PrismaService } from "src/database/PrismaService";
 import { CreateUserDto } from "../../dto/create-user.dto";
 import { QueryUserDto } from "../../dto/query-user.dto";
 import { UpdateUserDto } from "../../dto/update-user.dto";
-import { equal } from "assert";
+import { UsersRepository } from "../users.repository";
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -170,7 +169,7 @@ export class PrismaUsersRepository implements UsersRepository {
                 nome: dataUser.nome,
                 email: dataUser.email,
                 telefone: dataUser.telefone,
-                data_nasc: dataUser.data_nasc,
+                data_nasc: new Date(dataUser.data_nasc),
                 senha: dataUser.senha,
                 xp: dataUser.xp,
                 editado_em: new Date()
