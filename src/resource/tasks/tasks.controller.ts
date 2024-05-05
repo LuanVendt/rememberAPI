@@ -8,6 +8,7 @@ import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { UserEntity } from "../usuarios/entities/user-entity";
 import { CreateTaskItemDto } from "./dto/create-task-item.dto";
 import { PrismaService } from "src/database/PrismaService";
+import { string } from "zod";
 
 
 @Controller('tarefas')
@@ -47,14 +48,41 @@ export class TasksController {
         return this.tasksService.findAllCategories()
     }
 
+    @Get('categorias/:id')
+    async findCategoryById(@Param('id') id: string) {
+        return this.prisma.categorias.findUnique({
+            where: {
+                id: parseInt(id),
+            }
+        })
+    }
+
     @Get('status')
     async findAllStatus() {
         return this.prisma.status.findMany()
     }
 
+    @Get('status/:id')
+    async findStatusById(@Param('id') id: string) {
+        return this.prisma.status.findUnique({
+            where: {
+                id: parseInt(id)
+            }
+        })
+    }
+
     @Get('prioridade')
     async findAllPriorities() {
         return this.prisma.prioridade.findMany()
+    }
+
+    @Get('prioridade/:id')
+    async findPrioratyById(@Param('id') id: string) {
+        return this.prisma.prioridade.findUnique({
+            where: {
+                id: parseInt(id)
+            }
+        })
     }
 
     @Get(':id')
