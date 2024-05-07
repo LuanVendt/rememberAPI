@@ -230,6 +230,24 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
 
+        if (dataTask.id_status === 4) {
+            const { xp } = await this.prisma.usuarios.findUnique({
+                where: {
+                    id: parseInt(currentUserId)
+                }
+            })
+
+
+            await this.prisma.usuarios.update({
+                where: {
+                    id: parseInt(currentUserId),
+                },
+                data: {
+                    xp: xp + 10
+                }
+            })
+        }
+
         return task
     }
 
