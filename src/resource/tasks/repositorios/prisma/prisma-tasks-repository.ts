@@ -21,10 +21,10 @@ export class PrismaTasksRepository implements TasksRepository {
                 id_prioridade: data.id_prioridade,
                 id_status: data.id_status,
                 nome: data.nome,
-                descricao: data.descricao,
-                anotacao: data.anotacao,
+                descricao: data.descricao ? data.descricao : null,
+                anotacao: data.anotacao ? data.anotacao : null,
                 data_criacao: new Date(),
-                data_vencimento: new Date(data.data_vencimento),
+                data_vencimento: data.data_vencimento ? new Date(data.data_vencimento) : null,
                 criado_em: new Date(),
             }
         })
@@ -225,7 +225,7 @@ export class PrismaTasksRepository implements TasksRepository {
                 nome: dataTask.nome,
                 descricao: dataTask.descricao,
                 anotacao: dataTask.anotacao,
-                data_vencimento: dataTask.data_vencimento,
+                data_vencimento: new Date(dataTask.data_vencimento),
                 editado_em: new Date(),
             }
         })

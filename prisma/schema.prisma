@@ -41,10 +41,10 @@ model tarefas {
     id_status       Int
     id_prioridade   Int
     nome            String
-    descricao       String
-    anotacao        String
+    descricao       String?
+    anotacao        String?
     data_criacao    DateTime  @default(now())
-    data_vencimento DateTime
+    data_vencimento DateTime?
     criado_em       DateTime
     editado_em      DateTime?
     excluido_em     DateTime?
