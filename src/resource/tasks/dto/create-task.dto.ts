@@ -19,11 +19,11 @@ export class CreateTaskDto {
     nome: string;
 
     @IsString({ message: "O campo 'descricao' deve ser uma string." })
-    @IsNotEmpty({ message: "O campo 'descricao' não pode estar vazio." })
+    @IsOptional()
     descricao: string;
 
     @IsString({ message: "O campo 'anotacao' deve ser uma string." })
-    @IsNotEmpty({ message: "O campo 'anotacao' não pode estar vazio." })
+    @IsOptional()
     anotacao: string;
 
     @IsOptional()
