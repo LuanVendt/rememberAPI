@@ -5,13 +5,14 @@ import { QueryTarefaDto } from "./dto/query-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 import { CreateTaskItemDto } from "./dto/create-task-item.dto";
 
-
 @Injectable()
 export class TasksService {
     constructor(private tasksRepository: TasksRepository) { }
 
     async create(currentUserId: string, data: CreateTaskDto) {
         const task = await this.tasksRepository.create(currentUserId, data)
+
+        return task
     }
 
     async createItem(currentUserId: string, data: CreateTaskItemDto) {
@@ -79,7 +80,7 @@ export class TasksService {
     }
 
     async deleteItem(currentUserId: string, taskId: string, id: string) {
-        const task = await this.findUniqueItem(currentUserId, taskId ,id)
+        const task = await this.findUniqueItem(currentUserId, taskId, id)
 
         await this.tasksRepository.deleteItem(taskId, id)
     }

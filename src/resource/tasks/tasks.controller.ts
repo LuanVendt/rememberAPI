@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/guard/jwt-auth.guard";
 import { TasksService } from "./tasks.service";
 import { QueryTarefaDto } from "./dto/query-task.dto";
@@ -8,7 +8,8 @@ import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { UserEntity } from "../usuarios/entities/user-entity";
 import { CreateTaskItemDto } from "./dto/create-task-item.dto";
 import { PrismaService } from "src/database/PrismaService";
-import { string } from "zod";
+import { IUploadedFile, UploadFileAdapter } from "src/utils/upload.service";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 
 @Controller('tarefas')
@@ -16,12 +17,31 @@ import { string } from "zod";
 export class TasksController {
     constructor(
         private readonly tasksService: TasksService,
-        private readonly prisma: PrismaService
+        private readonly prisma: PrismaService,
+        private readonly uploadFileAdapter: UploadFileAdapter
     ) { }
 
     @Post()
     async create(@CurrentUser() currentUser: UserEntity, @Body() createTaskDto: CreateTaskDto) {
         return this.tasksService.create(String(currentUser.id), createTaskDto)
+    }
+
+    @Post(':id/upload/anexos')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadAttachment(@Param('id') id: string, @UploadedFile() file: IUploadedFile) {
+        try {
+            const fileURL = await this.uploadFileAdapter.uploadFile(file)
+
+            await this.prisma.anexos.create({
+                data: {
+                    id_tarefa: parseInt(id),
+                    nome: file.filename,
+                    url: fileURL
+                }
+            })
+        } catch (error: any) {
+            throw new Error(error);
+        }
     }
 
     @Post('lista')
