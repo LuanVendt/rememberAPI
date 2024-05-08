@@ -7,6 +7,7 @@ import { TasksModule } from './resource/tasks/tasks.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailController } from './resource/usuarios/email-controller';
 import { TransactionsModule } from './resource/transactions/transactions.module';
+import { UploadFileAdapter } from './utils/upload.service';
 
 
 @Module({
