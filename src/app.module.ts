@@ -8,6 +8,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailController } from './resource/usuarios/email-controller';
 import { TransactionsModule } from './resource/transactions/transactions.module';
 import { UploadFileAdapter } from './utils/upload.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { UploadFileAdapter } from './utils/upload.service';
         UsersModule,
         TasksModule,
         TransactionsModule,
+        ScheduleModule.forRoot()
     ],
     controllers: [AppController, EmailController], // EmailController
     providers: [AppService],

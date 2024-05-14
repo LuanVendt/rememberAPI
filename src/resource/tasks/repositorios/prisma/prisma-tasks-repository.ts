@@ -6,12 +6,19 @@ import { TaskEntity } from "../../entities/task-entity";
 import { QueryTarefaDto } from "../../dto/query-task.dto";
 import { UpdateTaskDto } from "../../dto/update-task.dto";
 import { CreateTaskItemDto } from "../../dto/create-task-item.dto";
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { date } from "zod";
 import { equal } from "assert";
+import { MailerService } from "@nestjs-modules/mailer";
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
-    constructor(private prisma: PrismaService) { }
+    constructor(
+        private prisma: PrismaService,
+        private mailerService: MailerService,
+    ) { }
+
+    private emailsEnviados: Set<number> = new Set<number>()
 
     async create(currentUserId: string, data: CreateTaskDto): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.create({
@@ -272,4 +279,49 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
     }
+
+    @Cron(CronExpression.EVERY_MINUTE)
+    async checkTasks() {
+        console.log("A função de disparar email para tarefas prestes a vencer iniciou!");
+        const tasks = await this.prisma.tarefas.findMany({
+            where: {
+                excluido_em: null,
+                data_vencimento: {
+                    gte: new Date(),
+                    lt: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000), 
+                }
+            },
+            include: {
+                usuarios: true
+            }
+        });
+
+        // for (const task of tasks) {
+        //     if (!this.emailsEnviados.has(task.id)) {
+        //         try {
+        //             await this.sendEmail(task, 'Tarefa prestes a vencer em 3 dias', task.data_vencimento, -3 * 24);
+
+        //             await this.sendEmail(task, 'Tarefa prestes a vencer em 1 dia', task.data_vencimento, -1 * 24);
+
+        //             await this.sendEmail(task, 'Tarefa prestes a vencer em 1 hora', task.data_vencimento, -1);
+
+        //             this.emailsEnviados.add(task.id);
+        //         } catch (error) {
+        //             console.error(`Erro ao enviar email para a tarefa "${task.nome}" (ID: ${task.id}): ${error.message}`);
+        //         }
+        //     }
+        // }
+    }
+
+    async sendEmail(task, subject, dataVencimento, horasParaEnvio) {
+        await this.mailerService.sendMail({
+            to: task.usuarios.email,
+            subject: subject,
+            text: `Sua tarefa "${task.nome}" está prestes a vencer no dia ${dataVencimento}`,
+        });
+
+        console.log(`Email enviado para a tarefa "${task.nome}" (ID: ${task.id})`);
+        console.log(`Email enviado para: ${task.usuarios.email}`);
+    }
 }
+
