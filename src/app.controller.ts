@@ -5,12 +5,13 @@ import { CurrentUser } from './auth/decorators/current-user.decorator';
 import { UserEntity } from './resource/usuarios/entities/user-entity';
 
 @Controller()
-@UseGuards(JwtAuthGuard)
 export class AppController {
     constructor(private readonly appService: AppService) { }
 
     @Get('hello')
     getHello(@CurrentUser() currentUser: UserEntity) {
-        return currentUser.id
+        return {
+            message: "OK"
+        }
     }
 }
