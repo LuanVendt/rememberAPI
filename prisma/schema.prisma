@@ -45,6 +45,7 @@ model tarefas {
     anotacao        String?
     data_criacao    DateTime  @default(now())
     data_vencimento DateTime?
+    notificado      Boolean   @default(false)
     criado_em       DateTime
     editado_em      DateTime?
     excluido_em     DateTime?

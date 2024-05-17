@@ -9,10 +9,13 @@ import { CreateTaskItemDto } from "../../dto/create-task-item.dto";
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { date } from "zod";
 import { equal } from "assert";
+import { Mutex } from 'async-mutex';
 import { MailerService } from "@nestjs-modules/mailer";
 
 @Injectable()
 export class PrismaTasksRepository implements TasksRepository {
+    private readonly mutex = new Mutex()
+
     constructor(
         private prisma: PrismaService,
         private mailerService: MailerService,
@@ -282,42 +285,60 @@ export class PrismaTasksRepository implements TasksRepository {
 
     @Cron(CronExpression.EVERY_MINUTE)
     async checkTasks() {
-        console.log("A função de disparar email para tarefas prestes a vencer iniciou!");
-        const tasks = await this.prisma.tarefas.findMany({
-            where: {
-                excluido_em: null,
-                data_vencimento: {
-                    gte: new Date(),
-                    lt: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000), 
+        // Use um bloqueio para evitar execuções simultâneas
+        await this.mutex.runExclusive(async () => {
+            console.log("A função de disparar email para tarefas prestes a vencer iniciou!");
+
+            // Obter as tarefas que precisam ser processadas fora de qualquer transação
+            const tasks = await this.prisma.tarefas.findMany({
+                where: {
+                    excluido_em: null,
+                    notificado: false,
+                    data_vencimento: {
+                        gte: new Date(),
+                        lt: new Date(new Date().getTime() + 3 * 24 * 60 * 60 * 1000),
+                    }
+                },
+                include: {
+                    usuarios: true
                 }
-            },
-            include: {
-                usuarios: true
+            });
+
+            // Processar cada tarefa individualmente
+            for (const task of tasks) {
+                try {
+                    // Enviar email fora da transação
+                    await this.sendEmail(task, 'Tarefa Prestes a Vencer', task.data_vencimento, 24);
+
+                    // Atualizar a tarefa dentro de uma transação com tempo limite individual
+                    await this.prisma.$transaction(async (prisma) => {
+                        await prisma.tarefas.update({
+                            where: { id: task.id },
+                            data: { notificado: true },
+                        });
+                    }, { timeout: 5000 }); // Tempo limite menor para cada transação
+
+                    console.log(`Tarefa ${task.id} atualizada como notificada.`);
+                } catch (error) {
+                    console.error(`Erro ao processar a tarefa ${task.id}:`, error);
+                }
             }
         });
-
-        // for (const task of tasks) {
-        //     if (!this.emailsEnviados.has(task.id)) {
-        //         try {
-        //             await this.sendEmail(task, 'Tarefa prestes a vencer em 3 dias', task.data_vencimento, -3 * 24);
-
-        //             await this.sendEmail(task, 'Tarefa prestes a vencer em 1 dia', task.data_vencimento, -1 * 24);
-
-        //             await this.sendEmail(task, 'Tarefa prestes a vencer em 1 hora', task.data_vencimento, -1);
-
-        //             this.emailsEnviados.add(task.id);
-        //         } catch (error) {
-        //             console.error(`Erro ao enviar email para a tarefa "${task.nome}" (ID: ${task.id}): ${error.message}`);
-        //         }
-        //     }
-        // }
     }
 
     async sendEmail(task, subject, dataVencimento, horasParaEnvio) {
         await this.mailerService.sendMail({
             to: task.usuarios.email,
             subject: subject,
-            text: `Sua tarefa "${task.nome}" está prestes a vencer no dia ${dataVencimento}`,
+            text: `Olá, ${task.usuarios.nome}
+            
+            Parece que você tem tarefas atrasadas 😥😱
+            Acesse o Remember e conclua suas tarefas!!!
+            
+            Concluindo uma tarefa, você ganha xps e desbloqueia avatares 🎉🎉
+            
+            Se precisar de alguma ajuda, entre em contato conosco pelo email: rememberfatec@gmail.com
+            Abraços.`,
         });
 
         console.log(`Email enviado para a tarefa "${task.nome}" (ID: ${task.id})`);
