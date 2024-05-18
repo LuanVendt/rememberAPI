@@ -223,6 +223,11 @@ export class PrismaTasksRepository implements TasksRepository {
     }
 
     async update(currentUserId: string, id: string, dataTask: UpdateTaskDto): Promise<TaskEntity> {
+        if (dataTask.data_vencimento) {
+            dataTask.data_vencimento = new Date(dataTask.data_vencimento)
+        }
+
+
         const task = await this.prisma.tarefas.update({
             where: {
                 id: parseInt(id),
@@ -236,7 +241,7 @@ export class PrismaTasksRepository implements TasksRepository {
                 nome: dataTask.nome,
                 descricao: dataTask.descricao,
                 anotacao: dataTask.anotacao,
-                data_vencimento: new Date(dataTask.data_vencimento),
+                data_vencimento: dataTask.data_vencimento,
                 editado_em: new Date(),
             }
         })

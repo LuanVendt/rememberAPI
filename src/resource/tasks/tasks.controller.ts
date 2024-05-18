@@ -58,11 +58,6 @@ export class TasksController {
         return this.tasksService.deleteItem(String(CurrentUser.id), taskId, itemId)
     }
 
-    @Get()
-    async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {
-        return this.tasksService.findAll(String(currentUser.id), query)
-    }
-
     @Get('categorias')
     async findAllCategories() {
         return this.tasksService.findAllCategories()
@@ -105,11 +100,15 @@ export class TasksController {
         })
     }
 
+    @Get()
+    async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryTarefaDto) {
+        return this.tasksService.findAll(String(currentUser.id), query)
+    }
+
     @Get(':id')
     async findUnique(@CurrentUser() currentUser: UserEntity, @Param('id') id: string) {
         return this.tasksService.findUnique(String(currentUser.id), id)
     }
-
 
     @Put(':id')
     async update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
