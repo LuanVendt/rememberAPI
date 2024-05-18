@@ -308,7 +308,7 @@ export class PrismaTasksRepository implements TasksRepository {
             for (const task of tasks) {
                 try {
                     // Enviar email fora da transação
-                    await this.sendEmail(task, 'Tarefa Prestes a Vencer', task.data_vencimento, 24);
+                    await this.sendEmailLateTasks(task, 'Tarefa Prestes a Vencer', task.data_vencimento, 24);
 
                     // Atualizar a tarefa dentro de uma transação com tempo limite individual
                     await this.prisma.$transaction(async (prisma) => {
@@ -343,7 +343,7 @@ export class PrismaTasksRepository implements TasksRepository {
         console.log(`${lateTasks.count} tarefas foram atualizadas para status atrasado.`);
     }
 
-    async sendEmail(task, subject, dataVencimento, horasParaEnvio) {
+    async sendEmailLateTasks(task, subject, dataVencimento, horasParaEnvio) {
         await this.mailerService.sendMail({
             to: task.usuarios.email,
             subject: subject,
