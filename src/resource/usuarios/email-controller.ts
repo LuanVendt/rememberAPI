@@ -1,5 +1,6 @@
 import { MailerService } from "@nestjs-modules/mailer";
 import { BadRequestException, Body, Controller, HttpCode, Post } from "@nestjs/common";
+import { sendEmail } from "src/utils/send-email";
 
 @Controller('email')
 export class EmailController {
@@ -8,14 +9,6 @@ export class EmailController {
     @Post('send')
     @HttpCode(200)
     async sendEmail(@Body() body: any): Promise<void> {
-        try {
-            await this.mailerService.sendMail({
-                to: body.to,
-                subject: body.subject,
-                text: body.text,
-            })
-        } catch (error) {
-            throw new BadRequestException('Erro ao enviar o email: ' + error)
-        }
+        await sendEmail(this.mailerService, body.to, body.subject, body.text)
     }
 }

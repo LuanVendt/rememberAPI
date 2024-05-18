@@ -191,7 +191,6 @@ export class PrismaUsersRepository implements UsersRepository {
             throw new BadRequestException('Email já cadastrado.')
         }
 
-
         return user
     }
 
