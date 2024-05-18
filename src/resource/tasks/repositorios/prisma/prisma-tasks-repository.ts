@@ -285,11 +285,9 @@ export class PrismaTasksRepository implements TasksRepository {
 
     @Cron(CronExpression.EVERY_5_MINUTES)
     async checkTasks() {
-        // Use um bloqueio para evitar execuções simultâneas
         await this.mutex.runExclusive(async () => {
             console.log("A função de disparar email para tarefas prestes a vencer iniciou!");
 
-            // Obter as tarefas que precisam ser processadas fora de qualquer transação
             const tasks = await this.prisma.tarefas.findMany({
                 where: {
                     excluido_em: null,
@@ -304,19 +302,16 @@ export class PrismaTasksRepository implements TasksRepository {
                 }
             });
 
-            // Processar cada tarefa individualmente
             for (const task of tasks) {
                 try {
-                    // Enviar email fora da transação
                     await this.sendEmailLateTasks(task, 'Tarefa Prestes a Vencer', task.data_vencimento, 24);
 
-                    // Atualizar a tarefa dentro de uma transação com tempo limite individual
                     await this.prisma.$transaction(async (prisma) => {
                         await prisma.tarefas.update({
                             where: { id: task.id },
                             data: { notificado: true },
                         });
-                    }, { timeout: 5000 }); // Tempo limite menor para cada transação
+                    }, { timeout: 5000 }); 
 
                     console.log(`Tarefa ${task.id} atualizada como notificada.`);
                 } catch (error) {
