@@ -160,21 +160,37 @@ export class PrismaUsersRepository implements UsersRepository {
     }
 
     async update(id: number, dataUser: UpdateUserDto) {
-        const user = await this.prisma.usuarios.update({
-            where: {
-                id,
-                excluido_em: null
-            },
-            data: {
-                nome: dataUser.nome,
-                email: dataUser.email,
-                telefone: dataUser.telefone,
-                data_nasc: new Date(dataUser.data_nasc),
-                senha: dataUser.senha,
-                xp: dataUser.xp,
-                editado_em: new Date()
-            }
-        })
+        let findedUser
+        let user
+
+        if (dataUser.email) {
+            findedUser = await this.prisma.usuarios.findUnique({
+                where: {
+                    email: dataUser.email
+                }
+            })
+        }
+
+        if (!findedUser) {
+            user = await this.prisma.usuarios.update({
+                where: {
+                    id,
+                    excluido_em: null
+                },
+                data: {
+                    nome: dataUser.nome,
+                    email: dataUser.email,
+                    telefone: dataUser.telefone,
+                    data_nasc: new Date(dataUser.data_nasc),
+                    senha: dataUser.senha,
+                    xp: dataUser.xp,
+                    editado_em: new Date()
+                }
+            })
+        } else {
+            throw new BadRequestException('Email já cadastrado.')
+        }
+
 
         return user
     }
