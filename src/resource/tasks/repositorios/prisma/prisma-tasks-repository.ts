@@ -283,7 +283,7 @@ export class PrismaTasksRepository implements TasksRepository {
         })
     }
 
-    @Cron(CronExpression.EVERY_MINUTE)
+    @Cron(CronExpression.EVERY_5_MINUTES)
     async checkTasks() {
         // Use um bloqueio para evitar execuções simultâneas
         await this.mutex.runExclusive(async () => {
@@ -324,6 +324,23 @@ export class PrismaTasksRepository implements TasksRepository {
                 }
             }
         });
+
+        console.log("Começando a marcar tasks que já venceram como atrasadas")
+        const lateTasks = await this.prisma.tarefas.updateMany({
+            where: {
+                data_vencimento: {
+                    lt: new Date()
+                },
+                id_status: {
+                    not: 3
+                }
+            },
+            data: {
+                id_status: 3
+            }
+        })
+
+        console.log(`${lateTasks.count} tarefas foram atualizadas para status atrasado.`);
     }
 
     async sendEmail(task, subject, dataVencimento, horasParaEnvio) {
