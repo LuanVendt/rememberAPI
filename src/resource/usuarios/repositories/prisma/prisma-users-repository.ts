@@ -163,6 +163,10 @@ export class PrismaUsersRepository implements UsersRepository {
         let findedUser
         let user
 
+        if (dataUser.data_nasc) {
+            dataUser.data_nasc = new Date(dataUser.data_nasc)
+        }
+
         if (dataUser.email) {
             findedUser = await this.prisma.usuarios.findUnique({
                 where: {
@@ -181,7 +185,7 @@ export class PrismaUsersRepository implements UsersRepository {
                     nome: dataUser.nome,
                     email: dataUser.email,
                     telefone: dataUser.telefone,
-                    data_nasc: new Date(dataUser.data_nasc),
+                    data_nasc: dataUser.data_nasc,
                     senha: dataUser.senha,
                     xp: dataUser.xp,
                     editado_em: new Date()
