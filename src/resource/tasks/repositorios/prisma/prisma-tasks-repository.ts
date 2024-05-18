@@ -232,6 +232,7 @@ export class PrismaTasksRepository implements TasksRepository {
             data: {
                 id_categoria: dataTask.id_categoria,
                 id_prioridade: dataTask.id_prioridade,
+                id_status: dataTask.id_status,
                 nome: dataTask.nome,
                 descricao: dataTask.descricao,
                 anotacao: dataTask.anotacao,
@@ -311,7 +312,7 @@ export class PrismaTasksRepository implements TasksRepository {
                             where: { id: task.id },
                             data: { notificado: true },
                         });
-                    }, { timeout: 5000 }); 
+                    }, { timeout: 5000 });
 
                     console.log(`Tarefa ${task.id} atualizada como notificada.`);
                 } catch (error) {
