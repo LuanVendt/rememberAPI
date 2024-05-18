@@ -16,7 +16,7 @@ export class UsersController {
         private readonly prisma: PrismaService
     ) { }
 
-    @Post('/esqueci/senha')
+    @Post('/esqueci-a-senha')
     async sendEmail(@Body() updatePassword) {
         try {
             const { nome } = await this.prisma.usuarios.findUnique({
