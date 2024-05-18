@@ -16,6 +16,11 @@ export class UsersController {
         private readonly prisma: PrismaService
     ) { }
 
+    @Get('/temas')
+    async findAllThemes() {
+        return await this.prisma.temas.findMany()
+    }
+
     @Post('/esqueci-a-senha')
     async sendEmail(@Body() updatePassword) {
         try {

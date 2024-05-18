@@ -65,7 +65,7 @@ export class PrismaTasksRepository implements TasksRepository {
     }
 
     async findAll(currentUserId: string, query: QueryTarefaDto) {
-        let { page = 1, limit = 10, search = '', id_categoria, id_prioridade, id_status, nome, descricao, anotacao, data_criacao, criado_em, data_vencimento } = query;
+        let { page = 1, limit = 1000, search = '', id_categoria, id_prioridade, id_status, nome, descricao, anotacao, data_criacao, criado_em, data_vencimento } = query;
 
         page = Number(page);
         limit = Number(limit);
