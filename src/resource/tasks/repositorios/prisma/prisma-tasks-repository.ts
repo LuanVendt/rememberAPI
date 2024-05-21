@@ -65,19 +65,20 @@ export class PrismaTasksRepository implements TasksRepository {
     }
 
     async findAll(currentUserId: string, query: QueryTarefaDto) {
-        let { page = 1, limit = 1000, search = '', id_categoria, id_prioridade, id_status, nome, descricao, anotacao, data_criacao, criado_em, data_vencimento, data_vencimento_inicio, data_vencimento_fim } = query;
-    
+        let { page = 1, limit = 1000, search = '', id_categoria, id_prioridade, id_status, nome, descricao, anotacao, data_criacao, criado_em, data_vencimento } = query;
+
         page = Number(page);
         limit = Number(limit);
         search = String(search);
-    
+
         const skip = (page - 1) * limit;
-    
+
+
         let whereCondition: any = {
             id_usuario: parseInt(currentUserId),
             excluido_em: null,
         };
-    
+
         if (search) {
             whereCondition.OR = [
                 { nome: { contains: search } },
@@ -91,95 +92,85 @@ export class PrismaTasksRepository implements TasksRepository {
                 { id_prioridade: { contains: search } },
             ];
         }
-    
+
         if (nome) {
             whereCondition.nome = { contains: nome };
         }
-    
+
         if (descricao) {
             whereCondition.descricao = { contains: descricao };
         }
-    
+
         if (id_categoria) {
             whereCondition.id_categoria = { equals: parseInt(id_categoria) };
         }
-    
+
         if (id_status) {
             whereCondition.id_status = { equals: parseInt(id_status) };
         }
-    
+
         if (id_prioridade) {
             whereCondition.id_prioridade = { equals: parseInt(id_prioridade) };
         }
-    
+
         if (data_criacao) {
             const criadoEmString = String(data_criacao);
             const [ano, mes, dia] = criadoEmString.split('-').map(Number);
             const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
-    
+
             const inicioDoDia = new Date(dataCriacao);
             inicioDoDia.setUTCHours(0, 0, 0, 0);
-    
+
             const finalDoDia = new Date(dataCriacao);
             finalDoDia.setUTCHours(23, 59, 59, 999);
-    
+
             whereCondition.data_criacao = {
                 gte: inicioDoDia,
                 lte: finalDoDia
             };
         }
-    
+
         if (criado_em) {
             const criadoEmString = String(criado_em);
             const [ano, mes, dia] = criadoEmString.split('-').map(Number);
             const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
-    
+
             const inicioDoDia = new Date(dataCriacao);
             inicioDoDia.setUTCHours(0, 0, 0, 0);
-    
+
             const finalDoDia = new Date(dataCriacao);
             finalDoDia.setUTCHours(23, 59, 59, 999);
-    
+
             whereCondition.criado_em = {
                 gte: inicioDoDia,
                 lte: finalDoDia
             };
         }
-    
+
         if (data_vencimento) {
             const criadoEmString = String(data_vencimento);
             const [ano, mes, dia] = criadoEmString.split('-').map(Number);
             const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
-    
+
             const inicioDoDia = new Date(dataCriacao);
             inicioDoDia.setUTCHours(0, 0, 0, 0);
-    
+
             const finalDoDia = new Date(dataCriacao);
             finalDoDia.setUTCHours(23, 59, 59, 999);
-    
+
             whereCondition.data_vencimento = {
                 gte: inicioDoDia,
                 lte: finalDoDia
             };
         }
-    
-        if (data_vencimento_inicio && data_vencimento_fim) {
-            const dataInicio = new Date(data_vencimento_inicio);
-            const dataFim = new Date(data_vencimento_fim);
-            
-            whereCondition.data_vencimento = {
-                gte: dataInicio,
-                lte: dataFim
-            };
-        }
-    
+
         const total = await this.prisma.tarefas.count({
             where: {
                 excluido_em: null,
                 ...whereCondition
             },
         });
-    
+
         const tasks = await this.prisma.tarefas.findMany({
             where: {
                 excluido_em: null,
@@ -191,7 +182,7 @@ export class PrismaTasksRepository implements TasksRepository {
                 lista_tarefa: {}
             }
         });
-    
+
         return {
             total,
             page,
@@ -201,7 +192,6 @@ export class PrismaTasksRepository implements TasksRepository {
             data: tasks,
         };
     }
-    
 
     async findUnique(currentUserId: string, id: string): Promise<TaskEntity> {
         const task = await this.prisma.tarefas.findUnique({
