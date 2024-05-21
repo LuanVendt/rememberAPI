@@ -21,6 +21,15 @@ export class UsersController {
         return await this.prisma.temas.findMany()
     }
 
+    @Get('/temas/:id')
+    async findUniqueTheme(@Param('id') id: string) {
+        return await this.prisma.temas.findUnique({
+            where: {
+                id: parseInt(id)
+            }
+        })
+    }
+
     @Post('/esqueci-a-senha')
     async sendEmail(@Body() updatePassword) {
         try {
