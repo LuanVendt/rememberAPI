@@ -9,6 +9,7 @@ import { EmailController } from './resource/usuarios/email-controller';
 import { TransactionsModule } from './resource/transactions/transactions.module';
 import { UploadFileAdapter } from './utils/upload.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { MulterModule } from '@nestjs/platform-express';
 
 
 @Module({

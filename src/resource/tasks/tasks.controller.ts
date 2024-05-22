@@ -7,6 +7,7 @@ import { UpdateTaskDto } from "./dto/update-task.dto";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { UserEntity } from "../usuarios/entities/user-entity";
 import { CreateTaskItemDto } from "./dto/create-task-item.dto";
+import { diskStorage } from 'multer'
 import { PrismaService } from "src/database/PrismaService";
 import { IUploadedFile, UploadFileAdapter } from "src/utils/upload.service";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -27,7 +28,11 @@ export class TasksController {
     }
 
     @Post(':id/upload/anexos')
-    @UseInterceptors(FileInterceptor('file'))
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: './src/uploads'
+        })
+    }))
     async uploadAttachment(@Param('id') id: string, @UploadedFile() file: IUploadedFile) {
         try {
             const fileURL = await this.uploadFileAdapter.uploadFile(file)

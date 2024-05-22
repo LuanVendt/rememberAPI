@@ -54,7 +54,7 @@ export class UploadFileAdapter implements IUploadFilePort {
             };
 
             const filePath = path.join(
-                `src/uploads/${file.filename}` 
+                `src/uploads/${file.filename}`
             );
 
             const media = {
