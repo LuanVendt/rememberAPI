@@ -5,6 +5,10 @@ export class UpdateUserDto {
     @IsOptional()
     nome?: string
 
+    @IsNumber({}, { message: "O campo 'id_tema' deve ser um número inteiro." })
+    @IsOptional()
+    id_tema?: number
+
     @IsEmail({}, { message: "O campo 'email' deve ser um email válido." })
     @IsOptional()
     email?: string

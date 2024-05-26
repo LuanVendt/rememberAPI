@@ -1,5 +1,6 @@
 export interface UserEntity {
     id?: number
+    id_tema: number
     nome: string
     email: string
     data_nasc: Date
