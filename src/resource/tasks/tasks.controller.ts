@@ -11,6 +11,7 @@ import { diskStorage } from 'multer'
 import { PrismaService } from "src/database/PrismaService";
 import { IUploadedFile, UploadFileAdapter } from "src/utils/upload.service";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { UpdateTaskItemDto } from "./dto/update-task-item.dto";
 
 
 @Controller('tarefas')
@@ -118,6 +119,11 @@ export class TasksController {
     @Put(':id')
     async update(@CurrentUser() currentUser: UserEntity, @Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
         return this.tasksService.update(String(currentUser.id), id, updateTaskDto)
+    }
+
+    @Put('item-tarefa/:id')
+    async updateTaskItem(@Param('id') id: string, @Body() data: UpdateTaskItemDto) {
+        return this.tasksService.updateTaskItem(parseInt(id), data)
     }
 
     @Delete(':id')

@@ -4,10 +4,15 @@ import { CreateTaskDto } from "./dto/create-task.dto";
 import { QueryTarefaDto } from "./dto/query-task.dto";
 import { UpdateTaskDto } from "./dto/update-task.dto";
 import { CreateTaskItemDto } from "./dto/create-task-item.dto";
+import { UpdateTaskItemDto } from "./dto/update-task-item.dto";
+import { PrismaService } from "src/database/PrismaService";
 
 @Injectable()
 export class TasksService {
-    constructor(private tasksRepository: TasksRepository) { }
+    constructor(
+        private tasksRepository: TasksRepository,
+        private prisma: PrismaService
+    ) { }
 
     async create(currentUserId: string, data: CreateTaskDto) {
         const task = await this.tasksRepository.create(currentUserId, data)
@@ -67,6 +72,30 @@ export class TasksService {
         const updatedTask = await this.tasksRepository.update(currentUserId, id, dataTask)
 
         return updatedTask
+    }
+
+    async updateTaskItem(id: number, data: UpdateTaskItemDto) {
+        const taskItem = await this.prisma.lista_tarefa.findUnique({
+            where: {
+                id,
+            }
+        })
+
+        if (!taskItem) {
+            throw new NotFoundException('Item da tarefa não encontrado')
+        }
+
+        const updatedTaskItem = await this.prisma.lista_tarefa.update({
+            where: {
+                id,
+            },
+            data: {
+                descricao: data.descricao,
+                status: data.status
+            }
+        })
+
+        return updatedTaskItem
     }
 
     async delete(currentUserId: string, id: string) {

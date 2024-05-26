@@ -2,7 +2,7 @@ import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsString } from "class-validat
 
 export class CreateTaskItemDto {
     @IsNotEmpty({ message: 'task_id não pode ser vazio.' })
-    @IsString({ message: 'task_id precisa ser um número inteiro.' })
+    @IsNumber({}, { message: 'task_id precisa ser um número inteiro.' })
     task_id: number;
 
     @IsNotEmpty({ message: 'descricao não pode ser vazio.' })
