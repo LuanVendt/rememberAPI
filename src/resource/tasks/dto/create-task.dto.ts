@@ -1,5 +1,6 @@
-import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { CreateTaskItemDto } from "./create-task-item.dto";
+import { Type } from "class-transformer";
 
 export class CreateTaskDto {
     @IsNumber({}, { message: "O campo 'id_categoria' deve ser um número inteiro." })
@@ -27,7 +28,7 @@ export class CreateTaskDto {
     anotacao: string;
 
     @IsOptional()
-    lista_tarefa?: CreateTaskItemDto
+    lista_tarefa?: CreateTaskItemDto[]
 
     @IsOptional()
     data_vencimento?: Date;

@@ -39,15 +39,27 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
 
-        if (data.lista_tarefa) {
-            await this.prisma.lista_tarefa.create({
-                data: {
-                    id_tarefa: task.id,
-                    descricao: data.lista_tarefa.descricao,
-                    status: Boolean(data.lista_tarefa.status),
-                    criado_em: new Date(),
-                }
-            })
+        // if (data.lista_tarefa) {
+        //     await this.prisma.lista_tarefa.create({
+        //         data: {
+        //             id_tarefa: task.id,
+        //             descricao: data.lista_tarefa.descricao,
+        //             status: Boolean(data.lista_tarefa.status),
+        //             criado_em: new Date(),
+        //         }
+        //     })
+        // }
+        if (data.lista_tarefa && data.lista_tarefa.length > 0) {
+            await Promise.all(data.lista_tarefa.map(async (item) => {
+                await this.prisma.lista_tarefa.create({
+                    data: {
+                        id_tarefa: task.id,
+                        descricao: item.descricao,
+                        status: Boolean(item.status),
+                        criado_em: new Date(),
+                    }
+                });
+            }));
         }
 
         return task
@@ -318,7 +330,7 @@ export class PrismaTasksRepository implements TasksRepository {
                             data: { notificado: true },
                         });
                     }, { timeout: 5000 });
-8
+                    8
                     console.log(`Tarefa ${task.id} atualizada como notificada.`);
                 } catch (error) {
                     console.error(`Erro ao processar a tarefa ${task.id}:`, error);
