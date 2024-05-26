@@ -39,16 +39,6 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
 
-        // if (data.lista_tarefa) {
-        //     await this.prisma.lista_tarefa.create({
-        //         data: {
-        //             id_tarefa: task.id,
-        //             descricao: data.lista_tarefa.descricao,
-        //             status: Boolean(data.lista_tarefa.status),
-        //             criado_em: new Date(),
-        //         }
-        //     })
-        // }
         if (data.lista_tarefa && data.lista_tarefa.length > 0) {
             await Promise.all(data.lista_tarefa.map(async (item) => {
                 await this.prisma.lista_tarefa.create({
@@ -211,6 +201,9 @@ export class PrismaTasksRepository implements TasksRepository {
                 id: parseInt(id),
                 id_usuario: parseInt(currentUserId),
                 excluido_em: null,
+            },
+            include: {
+                lista_tarefa: {}
             }
         })
 
