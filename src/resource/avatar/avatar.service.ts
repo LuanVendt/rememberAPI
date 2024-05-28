@@ -1,26 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAvatarDto } from './dto/create-avatar.dto';
-import { UpdateAvatarDto } from './dto/update-avatar.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { QueryAvatarDto } from './dto/query-avatar.dto';
+import { AvatarsRepository } from './repositories/avatar.repository';
 
 @Injectable()
 export class AvatarService {
-  create(createAvatarDto: CreateAvatarDto) {
-    return 'This action adds a new avatar';
-  }
+    constructor(private avatarsRepository: AvatarsRepository) { }
 
-  findAll() {
-    return `This action returns all avatar`;
-  }
+    async findAll(query: QueryAvatarDto) {
+        return await this.avatarsRepository.findAll(query)
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} avatar`;
-  }
+    async findUnique(id: string) {
+        const avatar = await this.avatarsRepository.findUnique(id)
 
-  update(id: number, updateAvatarDto: UpdateAvatarDto) {
-    return `This action updates a #${id} avatar`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} avatar`;
-  }
+        if (!avatar) {
+            throw new NotFoundException('Avatar não encontrado.')
+        }
+    }
 }

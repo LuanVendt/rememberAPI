@@ -26,7 +26,7 @@ model usuarios {
     editado_em             DateTime?
     excluido_em            DateTime?
     tarefas                tarefas[]
-    usuario_medalha        usuario_medalha?
+    usuario_medalha        usuario_avatar?
     consultas              consultas[]
     transacoes_financeiras transacoes_financeiras[]
     refreshToken           refresh_token[]
@@ -122,20 +122,20 @@ model temas {
     usuarios          usuarios[]
 }
 
-model medalhas {
-    id              Int              @id @unique @default(autoincrement())
+model avatares {
+    id              Int             @id @unique @default(autoincrement())
     nome            String
     qtde_xp         Int
     url_foto        String
-    usuario_medalha usuario_medalha?
+    usuario_medalha usuario_avatar?
 }
 
-model usuario_medalha {
+model usuario_avatar {
     id_usuario Int @unique
     id_medalha Int @unique
 
     usuario usuarios @relation(fields: [id_usuario], references: [id])
-    medalha medalhas @relation(fields: [id_medalha], references: [id])
+    medalha avatares @relation(fields: [id_medalha], references: [id])
 
     @@id([id_medalha, id_usuario])
 }
