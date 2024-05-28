@@ -10,6 +10,7 @@ import { TransactionsModule } from './resource/transactions/transactions.module'
 import { UploadFileAdapter } from './utils/upload.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MulterModule } from '@nestjs/platform-express';
+import { AvatarModule } from './resource/avatar/avatar.module';
 
 
 @Module({
@@ -32,7 +33,8 @@ import { MulterModule } from '@nestjs/platform-express';
         UsersModule,
         TasksModule,
         TransactionsModule,
-        ScheduleModule.forRoot()
+        ScheduleModule.forRoot(),
+        AvatarModule
     ],
     controllers: [AppController, EmailController], // EmailController
     providers: [AppService],
