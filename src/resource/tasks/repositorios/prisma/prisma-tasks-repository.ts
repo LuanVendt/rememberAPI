@@ -232,7 +232,6 @@ export class PrismaTasksRepository implements TasksRepository {
             dataTask.data_vencimento = new Date(dataTask.data_vencimento)
         }
 
-
         const task = await this.prisma.tarefas.update({
             where: {
                 id: parseInt(id),
@@ -251,13 +250,20 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
 
-        if (dataTask.id_status === 4) {
+        if (dataTask.id_status === 4 && !task.finalizado_em) {
+            await this.prisma.tarefas.update({
+                where: {
+                    id: task.id
+                }, data: {
+                    finalizado_em: new Date()
+                }
+            })
+
             const { xp } = await this.prisma.usuarios.findUnique({
                 where: {
                     id: parseInt(currentUserId)
                 }
             })
-
 
             await this.prisma.usuarios.update({
                 where: {
