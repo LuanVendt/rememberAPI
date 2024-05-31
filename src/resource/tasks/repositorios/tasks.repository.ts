@@ -10,9 +10,9 @@ export abstract class TasksRepository {
     abstract createItem(taskId: number, data: CreateTaskItemDto): Promise<void>
     abstract findAll(currentUserId: string, query: QueryTarefaDto)
     abstract findUnique(currentUserId: string, id: string): Promise<TaskEntity>
-    abstract findUniqueItem(currentUserId: string, taskId: string, id: string)
+    abstract findUniqueItem(id: string)
     abstract findAllCategories()
     abstract update(currentUserId: string, id: string, dataTask: UpdateTaskDto): Promise<TaskEntity>
     abstract delete(currentUserId: string, id: string): Promise<void>
-    abstract deleteItem(taskId: string, id: string): Promise<void>
+    abstract deleteItem(id: string): Promise<void>
 }   

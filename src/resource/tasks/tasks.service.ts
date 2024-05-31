@@ -46,10 +46,8 @@ export class TasksService {
         return task
     }
 
-    async findUniqueItem(currentUserId: string, taskId: string, id: string) {
-        const task = await this.findUnique(currentUserId, taskId)
-
-        const item = await this.tasksRepository.findUniqueItem(currentUserId, taskId, id)
+    async findUniqueItem(id: string) {
+        const item = await this.tasksRepository.findUniqueItem(id)
 
         if (!item) {
             throw new NotFoundException('Item não encontrado.')
@@ -108,9 +106,9 @@ export class TasksService {
         await this.tasksRepository.delete(currentUserId, id)
     }
 
-    async deleteItem(currentUserId: string, taskId: string, id: string) {
-        const task = await this.findUniqueItem(currentUserId, taskId, id)
+    async deleteItem(id: string) {
+        const task = await this.findUniqueItem(id)
 
-        await this.tasksRepository.deleteItem(taskId, id)
+        await this.tasksRepository.deleteItem(id)
     }
 }

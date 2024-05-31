@@ -55,13 +55,11 @@ export class TasksController {
         return this.tasksService.createItem(String(CurrentUser.id), createTaskItem)
     }
 
-    @Delete('/lista/:taskId/:itemId')
+    @Delete('item-tarefa/:id')
     async deleteItem(
-        @CurrentUser() CurrentUser: UserEntity,
-        @Param('taskId') taskId: string,
-        @Param('itemId') itemId: string
+        @Param('id') id: string,
     ) {
-        return this.tasksService.deleteItem(String(CurrentUser.id), taskId, itemId)
+        return this.tasksService.deleteItem(id)
     }
 
     @Get('categorias')

@@ -210,11 +210,10 @@ export class PrismaTasksRepository implements TasksRepository {
         return task
     }
 
-    async findUniqueItem(currentUserId: string, taskId: string, id: string) {
+    async findUniqueItem(id: string) {
         const item = await this.prisma.lista_tarefa.findUnique({
             where: {
                 id: parseInt(id),
-                id_tarefa: parseInt(taskId)
             }
         })
 
@@ -291,11 +290,10 @@ export class PrismaTasksRepository implements TasksRepository {
         })
     }
 
-    async deleteItem(taskId: string, id: string): Promise<void> {
+    async deleteItem(id: string): Promise<void> {
         const taskItem = await this.prisma.lista_tarefa.delete({
             where: {
                 id: parseInt(id),
-                id_tarefa: parseInt(taskId)
             }
         })
     }
