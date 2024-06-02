@@ -17,7 +17,8 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
                 descricao: data.descricao,
                 preco: Number(data.preco),
                 categoria: data.categoria,
-                data: new Date(),
+                criado_em: new Date(),
+                vencimento_em: new Date(data.vencimento_em) ? new Date(data.vencimento_em) : null,
                 tipo: data.tipo
             }
         })
@@ -26,7 +27,7 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     }
 
     async findAll(currentUserId: string, query: QueryTransactionDto) {
-        let { page = 1, limit = 10, search = '', descricao, preco, categoria, data, tipo } = query;
+        let { page = 1, limit = 10, search = '', descricao, preco, categoria, criado_em, vencimento_em, tipo } = query;
 
         page = Number(page);
         limit = Number(limit);
@@ -43,7 +44,8 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
                 { descricao: { contains: search } },
                 { preco: { contains: search } },
                 { categoria: { contains: search } },
-                { data: { contains: search } },
+                { criado_em: { contains: search } },
+                { vencimento_em_em: { contains: search } },
                 { tipo: { contains: search } },
             ];
         }
@@ -60,8 +62,8 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
             whereCondition.categoria = { contains: categoria };
         }
 
-        if (data) {
-            const criadoEmString = String(data);
+        if (criado_em) {
+            const criadoEmString = String(criado_em);
             const [ano, mes, dia] = criadoEmString.split('-').map(Number);
             const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
 
@@ -71,7 +73,24 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
             const finalDoDia = new Date(dataCriacao);
             finalDoDia.setUTCHours(23, 59, 59, 999);
 
-            whereCondition.data = {
+            whereCondition.criado_em = {
+                gte: inicioDoDia,
+                lte: finalDoDia
+            };
+        }
+
+        if (vencimento_em) {
+            const criadoEmString = String(vencimento_em);
+            const [ano, mes, dia] = criadoEmString.split('-').map(Number);
+            const dataCriacao = new Date(Date.UTC(ano, mes - 1, dia));
+
+            const inicioDoDia = new Date(dataCriacao);
+            inicioDoDia.setUTCHours(0, 0, 0, 0);
+
+            const finalDoDia = new Date(dataCriacao);
+            finalDoDia.setUTCHours(23, 59, 59, 999);
+
+            whereCondition.vencimento_em = {
                 gte: inicioDoDia,
                 lte: finalDoDia
             };
@@ -124,7 +143,8 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
                 descricao: data.descricao,
                 preco: data.preco,
                 categoria: data.categoria,
-                tipo: data.tipo
+                tipo: data.tipo,
+                vencimento_em: new Date(data.vencimento_em)
             }
         })
 

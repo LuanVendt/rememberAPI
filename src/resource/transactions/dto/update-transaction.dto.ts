@@ -2,20 +2,4 @@ import { PartialType } from '@nestjs/mapped-types';
 import { CreateTransactionDto } from './create-transaction.dto';
 import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class UpdateTransactionDto extends PartialType(CreateTransactionDto) {
-    @IsOptional({ message: 'descricao é obrigatório' })
-    @IsString({ message: 'descricao precisa ser uma string.' })
-    descricao?: string
-
-    @IsOptional({ message: 'preco é obrigatório' })
-    @IsNumber({}, { message: 'preco precisa ser um número.' })
-    preco?: number
-
-    @IsOptional({ message: 'categoria é obrigatório.' })
-    @IsString({ message: 'categoria precisa ser uma string.' })
-    categoria?: string
-
-    @IsOptional({ message: 'tipo é obrigatório.' })
-    @IsString({ message: 'tipo precisa ser uma string.' })
-    tipo?: string
-}
+export class UpdateTransactionDto extends PartialType(CreateTransactionDto) { }

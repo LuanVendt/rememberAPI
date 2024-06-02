@@ -4,6 +4,7 @@ export class TransactionEntity {
     descricao: string;
     preco: number;
     categoria: string;
-    data: Date;
+    criado_em: Date;
+    vencimento_em: Date;
     tipo: string;
 }

@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class CreateTransactionDto {
     @IsNotEmpty({ message: 'descricao é obrigatório' })
@@ -16,4 +16,7 @@ export class CreateTransactionDto {
     @IsNotEmpty({ message: 'tipo é obrigatório.' })
     @IsString({ message: 'tipo precisa ser uma string.' })
     tipo: string
+
+    @IsOptional()
+    vencimento_em: Date
 }

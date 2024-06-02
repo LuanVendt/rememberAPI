@@ -5,6 +5,7 @@ export class QueryTransactionDto {
     descricao?: String;
     preco?: String;
     categoria?: string;
-    data?: Date;
+    criado_em?: Date;
+    vencimento_em?: Date;
     tipo?: Date;
 }

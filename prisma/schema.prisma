@@ -153,13 +153,14 @@ model consultas {
 }
 
 model transacoes_financeiras {
-    id         Int      @id @unique @default(autoincrement())
-    id_usuario Int
-    descricao  String
-    preco      Float
-    categoria  String
-    data       DateTime
-    tipo       String
+    id            Int       @id @unique @default(autoincrement())
+    id_usuario    Int
+    descricao     String
+    preco         Float
+    categoria     String
+    criado_em     DateTime  @default(now())
+    vencimento_em DateTime?
+    tipo          String
 
     usuario usuarios @relation(fields: [id_usuario], references: [id])
 }
