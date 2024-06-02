@@ -18,7 +18,7 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
                 preco: Number(data.preco),
                 categoria: data.categoria,
                 criado_em: new Date(),
-                vencimento_em: new Date(data.vencimento_em) ? new Date(data.vencimento_em) : null,
+                vencimento_em: data.vencimento_em ? new Date(data.vencimento_em) : null,
                 tipo: data.tipo
             }
         })
