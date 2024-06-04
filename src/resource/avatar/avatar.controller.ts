@@ -9,8 +9,8 @@ export class AvatarController {
     constructor(private readonly avatarService: AvatarService) { }
 
     @Get()
-    async findAll(@Query() query: QueryAvatarDto) {
-        return this.avatarService.findAll(query);
+    async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryAvatarDto) {
+        return this.avatarService.findAll(currentUser.id, query);
     }
 
     @Get(':id')

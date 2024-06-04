@@ -16,6 +16,7 @@ datasource db {
 model usuarios {
     id                     Int                      @id @unique @default(autoincrement())
     id_tema                Int                      @default(1)
+    id_avatar              Int                      @default(1)
     nome                   String
     email                  String                   @unique
     data_nasc              DateTime
@@ -31,7 +32,8 @@ model usuarios {
     transacoes_financeiras transacoes_financeiras[]
     refreshToken           refresh_token[]
 
-    temas temas @relation(fields: [id_tema], references: [id])
+    temas    temas    @relation(fields: [id_tema], references: [id])
+    avatares avatares @relation(fields: [id_avatar], references: [id])
 }
 
 model tarefas {
@@ -128,6 +130,7 @@ model avatares {
     qtde_xp         Int
     url_foto        String
     usuario_medalha usuario_avatar?
+    usuarios        usuarios[]
 }
 
 model usuario_avatar {

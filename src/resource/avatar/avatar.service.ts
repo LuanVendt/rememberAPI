@@ -6,8 +6,8 @@ import { AvatarsRepository } from './repositories/avatar.repository';
 export class AvatarService {
     constructor(private avatarsRepository: AvatarsRepository) { }
 
-    async findAll(query: QueryAvatarDto) {
-        return await this.avatarsRepository.findAll(query)
+    async findAll(currentUserId: number, query: QueryAvatarDto) {
+        return await this.avatarsRepository.findAll(currentUserId, query)
     }
 
     async findUnique(id: string) {
