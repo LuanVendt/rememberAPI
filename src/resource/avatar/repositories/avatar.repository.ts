@@ -3,5 +3,6 @@ import { AvatarEntity } from "../entities/avatar.entity";
 
 export abstract class AvatarsRepository {
     abstract findAll(currentUserId: number, query: QueryAvatarDto)
+    abstract findAllWithoutXP(query: QueryAvatarDto)
     abstract findUnique(avatarId: string): Promise<AvatarEntity>
 }

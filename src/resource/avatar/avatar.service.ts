@@ -10,11 +10,17 @@ export class AvatarService {
         return await this.avatarsRepository.findAll(currentUserId, query)
     }
 
+    async findAllWithoutXP(query: QueryAvatarDto) {
+        return await this.avatarsRepository.findAllWithoutXP(query)
+    }
+
     async findUnique(id: string) {
         const avatar = await this.avatarsRepository.findUnique(id)
 
         if (!avatar) {
             throw new NotFoundException('Avatar não encontrado.')
         }
+
+        return avatar
     }
 }

@@ -6,16 +6,22 @@ import { QueryAvatarDto } from './dto/query-avatar.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @Controller('avatar')
-@UseGuards(JwtAuthGuard)
 export class AvatarController {
     constructor(private readonly avatarService: AvatarService) { }
 
     @Get()
+    @UseGuards(JwtAuthGuard)
     async findAll(@CurrentUser() currentUser: UserEntity, @Query() query: QueryAvatarDto) {
         return this.avatarService.findAll(currentUser.id, query);
     }
 
+    @Get('/todos')
+    async findAllWithoutXP(@Query() query: QueryAvatarDto) {
+        return this.avatarService.findAllWithoutXP(query);
+    }
+
     @Get(':id')
+    @UseGuards(JwtAuthGuard)
     async findUnique(@Param('id') id: string) {
         return this.avatarService.findUnique(id);
     }
