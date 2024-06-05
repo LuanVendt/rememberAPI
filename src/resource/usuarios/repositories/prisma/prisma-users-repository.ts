@@ -184,6 +184,7 @@ export class PrismaUsersRepository implements UsersRepository {
                 data: {
                     nome: dataUser.nome,
                     id_tema: dataUser.id_tema,
+                    id_avatar: dataUser.id_avatar,
                     email: dataUser.email,
                     telefone: dataUser.telefone,
                     data_nasc: dataUser.data_nasc,
