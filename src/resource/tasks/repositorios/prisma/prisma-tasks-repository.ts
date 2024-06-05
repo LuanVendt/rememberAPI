@@ -288,6 +288,12 @@ export class PrismaTasksRepository implements TasksRepository {
                 excluido_em: new Date()
             }
         })
+
+        await this.prisma.lista_tarefa.deleteMany({
+            where: {
+                id_tarefa: task.id
+            }
+        })
     }
 
     async deleteItem(id: string): Promise<void> {
