@@ -33,19 +33,19 @@ export class UsersController {
     @Post('/esqueci-a-senha')
     async sendEmail(@Body() updatePassword) {
         try {
-            const { nome } = await this.prisma.usuarios.findUnique({
+            const user = await this.prisma.usuarios.findUnique({
                 where: {
                     email: updatePassword.to
                 }
             })
             await sendEmail(this.mailerService, updatePassword.to, "Remember - Recuperação de Senha", `
-            Olá, ${nome}
+            Olá, ${user.nome}
 
             Parece que você esqueceu sua senha 🤔
             Recebemos o seu pedido de redefinição
 
             Clique no link abaixo para criar uma nova senha.
-            Link de acesso: https://remember.com/redefinir-senha
+            Link de acesso: https://remember.com/redefinir-senha/${user.id}
 
             Caso não tenha solicitado a alteração, por favor desconsidere o e-mail.
             Se precisar de alguma ajuda, entre em contato conosco através do e-mail: rememberfatec@gmail.com
