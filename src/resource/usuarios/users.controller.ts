@@ -49,7 +49,7 @@ export class UsersController {
             Recebemos o seu pedido de redefinição
 
             Clique no link abaixo para criar uma nova senha.
-            Link de acesso: https://localhost:3000/redefinir-senha/${user.id}
+            Link de acesso: http://localhost:4200/redefinir-senha/${user.id}
 
             Caso não tenha solicitado a alteração, por favor desconsidere o e-mail.
             Se precisar de alguma ajuda, entre em contato conosco através do e-mail: rememberfatec@gmail.com
