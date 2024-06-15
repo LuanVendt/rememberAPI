@@ -181,7 +181,8 @@ export class PrismaTasksRepository implements TasksRepository {
             skip,
             take: limit,
             include: {
-                lista_tarefa: {}
+                lista_tarefa: {},
+                anexos: {}
             }
         });
 
@@ -203,8 +204,10 @@ export class PrismaTasksRepository implements TasksRepository {
                 excluido_em: null,
             },
             include: {
-                lista_tarefa: {}
-            }
+                lista_tarefa: {},
+                anexos: {},
+            },
+
         })
 
         return task
