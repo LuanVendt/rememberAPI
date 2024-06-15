@@ -38,6 +38,10 @@ export class UsersController {
                     email: updatePassword.to
                 }
             })
+
+            if (!user) {
+                return
+            }
             await sendEmail(this.mailerService, updatePassword.to, "Remember - Recuperação de Senha", `
             Olá, ${user.nome}
 
