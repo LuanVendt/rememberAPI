@@ -307,7 +307,7 @@ export class PrismaTasksRepository implements TasksRepository {
         })
     }
 
-    @Cron(CronExpression.EVERY_5_MINUTES)
+    @Cron(CronExpression.EVERY_30_SECONDS)
     async checkTasks() {
         await this.mutex.runExclusive(async () => {
             console.log("A função de disparar email para tarefas prestes a vencer iniciou!");
