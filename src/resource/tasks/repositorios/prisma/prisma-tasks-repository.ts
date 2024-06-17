@@ -368,7 +368,7 @@ export class PrismaTasksRepository implements TasksRepository {
             subject: subject,
             text: `Olá, ${task.usuarios.nome}
             
-            Parece que você tem tarefas atrasadas 😥😱
+            Parece que você tem tarefas atrasadas ou prestes a vencer 😥😱
             Acesse o Remember e conclua suas tarefas!!!
             
             Concluindo uma tarefa, você ganha xps e desbloqueia avatares 🎉🎉
