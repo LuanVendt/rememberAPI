@@ -351,7 +351,7 @@ export class PrismaTasksRepository implements TasksRepository {
                     lt: new Date()
                 },
                 id_status: {
-                    not: 3
+                    notIn: [3, 4]
                 }
             },
             data: {
