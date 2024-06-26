@@ -234,6 +234,14 @@ export class PrismaTasksRepository implements TasksRepository {
             dataTask.data_vencimento = new Date(dataTask.data_vencimento)
         }
 
+        const existingTask = await this.prisma.tarefas.findUnique({
+            where: {
+                id: parseInt(id),
+                id_usuario: parseInt(currentUserId),
+                excluido_em: null,
+            }
+        });
+
         const task = await this.prisma.tarefas.update({
             where: {
                 id: parseInt(id),
@@ -252,18 +260,18 @@ export class PrismaTasksRepository implements TasksRepository {
             }
         })
 
+        const { xp } = await this.prisma.usuarios.findUnique({
+            where: {
+                id: parseInt(currentUserId)
+            }
+        })
+
         if (dataTask.id_status === 4 && !task.finalizado_em) {
             await this.prisma.tarefas.update({
                 where: {
                     id: task.id
                 }, data: {
                     finalizado_em: new Date()
-                }
-            })
-
-            const { xp } = await this.prisma.usuarios.findUnique({
-                where: {
-                    id: parseInt(currentUserId)
                 }
             })
 
@@ -275,9 +283,27 @@ export class PrismaTasksRepository implements TasksRepository {
                     xp: xp + 10
                 }
             })
+        } else if (existingTask.id_status === 4 && dataTask.id_status !== 4) {
+            await this.prisma.tarefas.update({
+                where: {
+                    id: task.id
+                },
+                data: {
+                    finalizado_em: null
+                }
+            });
+
+            await this.prisma.usuarios.update({
+                where: {
+                    id: parseInt(currentUserId),
+                },
+                data: {
+                    xp: xp - 10
+                }
+            });
         }
 
-        return task
+        return task;
     }
 
     async delete(currentUserId: string, id: string): Promise<void> {
